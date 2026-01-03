@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Builder
@@ -22,9 +21,14 @@ public class MemberResponse {
     private String email;
     private String phone;
     private LocalDate createdAt;
-    private List<String> roles;
+    private String role;
 
     public static MemberResponse fromEntity(Member member) {
+        String roleName = null;
+        if (member.getRole() != null) {
+            roleName = member.getRole().getRolename();
+        }
+        
         return MemberResponse.builder()
                 .id(member.getId())
                 .firstName(member.getFname())
@@ -33,9 +37,7 @@ public class MemberResponse {
                 .email(member.getEmail())
                 .phone(member.getPhone())
                 .createdAt(member.getCreatedAt())
-                .roles(member.getRoles().stream()
-                        .map(role -> role.getRolename())
-                        .toList())
+                .role(roleName)
                 .build();
     }
 }

@@ -90,10 +90,8 @@ public class MemberService {
                 .password(passwordEncoder.encode(form.getPassword()))
                 .phone(form.getPhone())
                 .createdAt(LocalDate.now())
+                .role(role)
                 .build();
-
-        // Assign the role
-        member.getRoles().add(role);
 
         return memberRepository.save(member);
     }
@@ -156,32 +154,28 @@ public class MemberService {
     }
 
     /**
-     * Adds a role to a member by username and role name.
+     * Sets or replaces the role for a member by username and role name.
      */
     public void addRoleToMember(String username, String roleName) {
         Member member = getByUsername(username);
         Role role = roleRepository.findByRolename(roleName)
                 .orElseThrow(() -> new ResourceNotFoundException("Role", "name", roleName));
 
-        if (member.getRoles().stream().anyMatch(r -> r.getRolename().equals(roleName))) {
-            throw new BadRequestException("Member already has this role");
-        }
-
-        member.getRoles().add(role);
+        member.setRole(role);
         memberRepository.save(member);
     }
 
     /**
-     * Removes a role from a member by username and role name.
+     * Removes the role from a member by username and role name.
      */
     public void removeRoleFromMember(String username, String roleName) {
         Member member = getByUsername(username);
 
-        boolean removed = member.getRoles().removeIf(role -> role.getRolename().equals(roleName));
-        if (!removed) {
+        if (member.getRole() == null || !member.getRole().getRolename().equals(roleName)) {
             throw new BadRequestException("Member does not have this role");
         }
 
+        member.setRole(null);
         memberRepository.save(member);
     }
 
@@ -190,14 +184,16 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("Member not found"));
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        member.getRoles().add(role);
+        member.setRole(role);
         memberRepository.save(member);
     }
 
     public void removeRoleFromMember(Long memberId, Long roleId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
-        member.getRoles().removeIf(role -> role.getId().equals(roleId));
+        if (member.getRole() != null && member.getRole().getId().equals(roleId)) {
+            member.setRole(null);
+        }
         memberRepository.save(member);
     }
 

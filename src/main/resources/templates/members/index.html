@@ -401,13 +401,13 @@
                         <!-- Roles (Admin only) -->
                         <td class="px-6 py-4" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
                             <div class="flex flex-wrap gap-2">
-                                <div th:each="role : ${member.roles}" class="group relative inline-flex items-center">
+                                <div th:if="${member.role != null}" class="group relative inline-flex items-center">
                                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#F0FDF4] text-[#166534] border border-[#BBF7D0]">
                                         <i class="fas fa-shield-alt text-[10px]"></i>
-                                        <span th:text="${role.rolename}">Role</span>
+                                        <span th:text="${member.role.rolename}">Role</span>
                                     </span>
                                     <!-- Remove Role Button -->
-                                    <form th:action="@{/members/{username}/roles/{roleName}/delete(username=${member.username}, roleName=${role.rolename})}"
+                                    <form th:action="@{/members/{username}/roles/{roleName}/delete(username=${member.username}, roleName=${member.role.rolename})}"
                                           method="post"
                                           class="inline">
                                         <button type="submit"
@@ -418,6 +418,7 @@
                                         </button>
                                     </form>
                                 </div>
+                                <span th:if="${member.role == null}" class="text-xs text-[#999]">No role assigned</span>
                             </div>
                         </td>
 

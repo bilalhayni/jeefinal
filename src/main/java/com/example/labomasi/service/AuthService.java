@@ -38,7 +38,7 @@ public class AuthService {
 
         // Assign role
         Optional<Role> role = roleRepository.findByRolename(roleName);
-        role.ifPresent(r -> member.getRoles().add(r));
+        role.ifPresent(member::setRole);
 
         return memberRepository.save(member);
     }

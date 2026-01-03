@@ -95,7 +95,8 @@
                     </div>
                     <div class="text-left">
                         <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
-                        <div class="text-[11px] text-[#999]" th:each="role : ${member.roles}" th:text="${role.getRolename()}">Role</div>
+                        <div class="text-[11px] text-[#999]" th:if="${member.role != null}" th:text="${member.role.getRolename()}">Role</div>
+                        <div class="text-[11px] text-[#999]" th:if="${member.role == null}">No role</div>
                     </div>
                     <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1"></i>
                 </div>
