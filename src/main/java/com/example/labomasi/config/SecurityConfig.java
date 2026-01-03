@@ -41,12 +41,19 @@ public class SecurityConfig {
                         // Static resources
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
-                        // Error pages
-                        .requestMatchers("/404", "/403", "/error").permitAll()
+                        // Error pages - handled by Spring Boot's error controller
+                        .requestMatchers("/error", "/error/**").permitAll()
 
-                        // Member management - ADMINISTRATEUR & DIRECTEUR can view
-                        .requestMatchers("/member").hasAnyRole("ADMINISTRATEUR", "DIRECTEUR")
-                        .requestMatchers("/member/add", "/member/edit/**", "/member/delete/**", "/member/addRole/**", "/member/*/removeRole/**").hasRole("ADMINISTRATEUR")
+                        // Member management - ADMINISTRATEUR & DIRECTEUR can view list
+                        .requestMatchers("/members").hasAnyRole("ADMINISTRATEUR", "DIRECTEUR")
+                        // Member create form - ADMINISTRATEUR only
+                        .requestMatchers("/members/new").hasRole("ADMINISTRATEUR")
+                        // Member profile view - any authenticated user (could be viewing own profile)
+                        .requestMatchers("/members/*").authenticated()
+                        // Member edit/delete/roles - ADMINISTRATEUR only
+                        .requestMatchers("/members/*/edit").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/members/*/delete").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/members/*/roles/**").hasRole("ADMINISTRATEUR")
 
                         // Resource management - ADMINISTRATEUR only
                         .requestMatchers("/resource/**").hasRole("ADMINISTRATEUR")
@@ -73,9 +80,11 @@ public class SecurityConfig {
                 // User details service
                 .userDetailsService(userDetailsService)
 
-                // Access denied handler
+                // Exception handling - use error templates
                 .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/403")
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            request.getRequestDispatcher("/error/403").forward(request, response);
+                        })
                 );
 
         return http.build();
