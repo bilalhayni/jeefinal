@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASI Labo - My Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap 5 (for dropdowns) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#00593E',
+                            700: '#004D35',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #FAFAFA;
+            color: #1A1A1A;
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #FFFFFF;
+            border-right: 1px solid #E8E8E8;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar.collapsed .sidebar-header {
+            padding: 24px 12px;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-item span {
+            display: none;
+        }
+
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .sidebar.collapsed .nav-section-title {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-footer {
+            padding: 16px 8px;
+        }
+
+        .sidebar.collapsed .logout-btn span {
+            display: none;
+        }
+
+        .sidebar.collapsed .logout-btn {
+            justify-content: center;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #E8E8E8;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #00593E 0%, #004D35 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-icon i {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1A1A1A;
+        }
+
+        .logo-text span {
+            color: #00593E;
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-item:hover {
+            background: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .nav-item.active {
+            background: rgba(0, 89, 62, 0.08);
+            color: #00593E;
+            font-weight: 500;
+        }
+
+        .nav-item.active i {
+            color: #00593E;
+        }
+
+        .nav-item i {
+            width: 18px;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid #E8E8E8;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: #EF4444;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            background: none;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .logout-btn:hover {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E8E8E8;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .toggle-sidebar {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid #E8E8E8;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .toggle-sidebar:hover {
+            background: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid #E8E8E8;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .btn-icon:hover {
+            background: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .btn-icon .badge-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #EF4444;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        /* User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px 6px 6px;
+            border: 1px solid #E8E8E8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .user-profile:hover {
+            background: #F5F5F5;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00593E 0%, #004D35 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .user-details {
+            text-align: left;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 13px;
+            color: #1A1A1A;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            border: 1px solid #E8E8E8;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 8px;
+            min-width: 200px;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-item:hover {
+            background: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .dropdown-item.text-danger {
+            color: #EF4444;
+        }
+
+        .dropdown-item.text-danger:hover {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+
+        .dropdown-header {
+            padding: 12px;
+            border-bottom: 1px solid #E8E8E8;
+            margin-bottom: 8px;
+        }
+
+        .dropdown-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dropdown-header .user-avatar-lg {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00593E 0%, #004D35 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .dropdown-header .user-meta .name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1A1A1A;
+        }
+
+        .dropdown-header .user-meta .email {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .top-header {
+                padding: 12px 16px;
+            }
+
+            .user-details {
+                display: none;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-icon">
+            <i class="fas fa-flask"></i>
+        </div>
+        <div class="logo-text">MASI <span>Labo</span></div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main Menu</div>
+            <a class="nav-item" th:href="@{/}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-item" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog"></i>
+                <span>Members & Roles</span>
+            </a>
+            <a class="nav-item" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+                <i class="fas fa-users"></i>
+                <span>Members</span>
+            </a>
+            <a class="nav-item" th:href="@{/project/view}">
+                <i class="fas fa-folder-open"></i>
+                <span>Projects</span>
+            </a>
+            <a class="nav-item" th:href="@{/pub}">
+                <i class="fas fa-file-alt"></i>
+                <span>Publications</span>
+            </a>
+            <a class="nav-item" th:href="@{/resource}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box"></i>
+                <span>Resources</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a class="nav-item active" th:href="@{/profile}">
+                <i class="fas fa-user-circle"></i>
+                <span>My Profile</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="sidebar-footer">
+        <form method="post" th:action="@{/logout}" style="margin: 0;">
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Sign Out</span>
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="mainContent">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="toggle-sidebar" onclick="toggleSidebar()" title="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title">My Profile</h1>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn-icon">
+                <i class="fas fa-bell"></i>
+                <span class="badge-dot"></span>
+            </button>
+
+            <!-- User Profile Dropdown -->
+            <div class="dropdown">
+                <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="user-avatar">
+                        <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" th:text="${#authentication.name}">User Name</div>
+                        <div class="user-role" sec:authentication="principal.authorities">Role</div>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-400 text-xs ml-1"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <div class="user-avatar-lg">
+                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
+                                </div>
+                                <div class="user-meta">
+                                    <div class="name" th:text="${#authentication.name}">User Name</div>
+                                    <div class="email text-gray-500 text-xs">Logged in user</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/profile}">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post" style="margin: 0;">
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Sign Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="p-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900">Account Settings</h2>
+            <p class="text-gray-500 mt-1">Manage your personal information and account preferences.</p>
+        </div>
+
+        <!-- Check if member exists -->
+        <div th:if="${member != null}">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Profile Card (Left Side) -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                        <!-- Profile Header with Gradient -->
+                        <div class="h-24 bg-gradient-to-br from-primary-600 to-primary-700 relative">
+                            <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white">
+                                    <span th:text="${member.fname != null ? #strings.substring(member.fname, 0, 1).toUpperCase() : 'U'}">A</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Info -->
+                        <div class="pt-16 pb-6 px-6 text-center">
+                            <h3 class="text-xl font-bold text-gray-900">
+                                <span th:text="${member.fname}">First</span>
+                                <span th:text="${member.lname}">Last</span>
+                            </h3>
+                            <p class="text-gray-500 text-sm mt-1" th:text="${member.email}">email@example.com</p>
+
+                            <!-- Roles Badges -->
+                            <div class="flex flex-wrap justify-center gap-2 mt-4" th:if="${member.roles != null}">
+                                <span th:each="role : ${member.roles}"
+                                      class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200">
+                                    <i class="fas fa-shield-alt text-[10px]"></i>
+                                    <span th:text="${role.rolename}">Role</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="border-t border-gray-100 px-6 py-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-gray-900" th:text="${member.roles != null ? #lists.size(member.roles) : 0}">0</div>
+                                    <div class="text-xs text-gray-500">Roles</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-primary-600">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="text-xs text-gray-500">Active</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Card -->
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mt-6">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <h4 class="font-semibold text-gray-900">Quick Actions</h4>
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <a th:href="@{/}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                                    <i class="fas fa-th-large text-blue-600 text-sm"></i>
+                                </div>
+                                <span class="text-sm font-medium">Go to Dashboard</span>
+                            </a>
+                            <a th:href="@{/project/view}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                                    <i class="fas fa-folder-open text-emerald-600 text-sm"></i>
+                                </div>
+                                <span class="text-sm font-medium">View Projects</span>
+                            </a>
+                            <a th:href="@{/pub}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
+                                <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-amber-600 text-sm"></i>
+                                </div>
+                                <span class="text-sm font-medium">View Publications</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Form (Right Side) -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                        <!-- Form Header -->
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
+                                    <i class="fas fa-user-edit text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">Personal Information</h3>
+                                    <p class="text-xs text-gray-500">Update your account details</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Body -->
+                        <form th:action="@{/profile/update}" th:object="${member}" method="post" class="p-6">
+                            <input type="hidden" th:field="*{id_member}">
+
+                            <!-- Username (Read-only) -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-at text-gray-400 mr-1"></i>
+                                    Username
+                                </label>
+                                <div class="relative">
+                                    <input type="text"
+                                           th:value="*{username}"
+                                           readonly
+                                           disabled
+                                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-lock text-gray-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <p class="mt-1.5 text-xs text-gray-500">Username cannot be changed</p>
+                            </div>
+
+                            <!-- Name Fields -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        First Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text"
+                                           th:field="*{fname}"
+                                           required
+                                           class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                                           placeholder="Enter first name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Last Name <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="text"
+                                           th:field="*{lname}"
+                                           required
+                                           class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                                           placeholder="Enter last name">
+                                </div>
+                            </div>
+
+                            <!-- Email (Read-only) -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-envelope text-gray-400 mr-1"></i>
+                                    Email Address
+                                </label>
+                                <div class="relative">
+                                    <input type="email"
+                                           th:value="*{email}"
+                                           readonly
+                                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed">
+                                    <input type="hidden" th:field="*{email}">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-lock text-gray-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <p class="mt-1.5 text-xs text-gray-500">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Email address cannot be changed. Contact administrator for assistance.
+                                </p>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-phone text-gray-400 mr-1"></i>
+                                    Phone Number
+                                </label>
+                                <input type="tel"
+                                       th:field="*{phone}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                                       placeholder="Enter phone number">
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="border-t border-gray-200 my-8"></div>
+
+                            <!-- Password Section -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <i class="fas fa-key text-gray-400"></i>
+                                    Change Password
+                                </h4>
+                                <p class="text-xs text-gray-500 mb-4">Leave blank if you don't want to change your password</p>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            New Password
+                                        </label>
+                                        <input type="password"
+                                               th:field="*{password}"
+                                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                                               placeholder="Enter new password">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Confirm Password
+                                        </label>
+                                        <input type="password"
+                                               name="confirmPassword"
+                                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                                               placeholder="Confirm new password">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
+                                <a th:href="@{/}"
+                                   class="px-5 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                    Cancel
+                                </a>
+                                <button type="submit"
+                                        class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md inline-flex items-center gap-2">
+                                    <i class="fas fa-save text-sm"></i>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Account Info Card -->
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mt-6">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <h4 class="font-semibold text-gray-900">Account Information</h4>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                                        <i class="fas fa-id-badge text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Member ID</p>
+                                        <p class="font-medium text-gray-900" th:text="'#' + ${member.id_member}">--</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center">
+                                        <i class="fas fa-shield-alt text-emerald-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Account Status</p>
+                                        <p class="font-medium text-emerald-600">Active</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
+                                        <i class="fas fa-user-tag text-amber-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Primary Role</p>
+                                        <p class="font-medium text-gray-900" th:text="${member.roles != null and #lists.size(member.roles) > 0} ? ${member.roles[0].rolename} : 'No Role'">Role</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-lg bg-violet-50 flex items-center justify-center">
+                                        <i class="fas fa-building text-violet-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Laboratory</p>
+                                        <p class="font-medium text-gray-900">MASI Labo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error state when member is null -->
+        <div th:if="${member == null}" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Profile Not Found</h3>
+            <p class="text-gray-500 mb-6">We couldn't load your profile information. Please try again later.</p>
+            <a th:href="@{/}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200">
+                <i class="fas fa-home"></i>
+                Go to Dashboard
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Toggle Sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+    }
+
+    // Restore sidebar state
+    document.addEventListener('DOMContentLoaded', function() {
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed && window.innerWidth > 768) {
+            document.getElementById('sidebar').classList.add('collapsed');
+            document.getElementById('mainContent').classList.add('expanded');
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        }
+    });
+
+    // Password confirmation validation
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const password = document.querySelector('input[name="password"]');
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]');
+
+            if (password && confirmPassword && password.value && password.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    }
+</script>
+</body>
+</html>

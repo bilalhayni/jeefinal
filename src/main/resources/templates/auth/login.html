@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASI Labo - Sign In</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Moroccan Pattern */
+        .moroccan-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.15'/%3E%3Cpath d='M30 10L50 30L30 50L10 30L30 10z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="min-h-screen font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#E8ECF0] relative overflow-hidden">
+
+<!-- Decorative Background - Same style as reference but light mode -->
+<div class="absolute inset-0 overflow-hidden">
+    <!-- Moroccan Pattern Overlay -->
+    <div class="absolute inset-0 moroccan-pattern opacity-100"></div>
+
+    <!-- Blur Circles - Gold and Forest Green like reference -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#00593E]/10 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 left-1/4 w-80 h-80 bg-[#D4AF37]/8 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/3 right-1/4 w-72 h-72 bg-[#00593E]/8 rounded-full blur-3xl"></div>
+</div>
+
+<!-- Login Container -->
+<div class="min-h-screen flex items-center justify-center p-4 relative z-10">
+    <div class="w-full max-w-[440px]">
+        <!-- Login Card -->
+        <div class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.2)] p-11">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 bg-gradient-to-br from-[#00593E] to-[#004D35] rounded-lg flex items-center justify-center">
+                    <i class="fas fa-flask text-white text-sm"></i>
+                </div>
+                <span class="font-semibold text-xl text-[#1A1A1A]">MASI Labo</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-2xl font-semibold text-[#1A1A1A] mb-6">Sign in</h1>
+
+            <!-- Error Message -->
+            <div th:if="${param.error}" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p class="text-sm text-red-600 flex items-center gap-2">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Invalid email or password
+                </p>
+            </div>
+
+            <!-- Logout Message -->
+            <div th:if="${param.logout}" class="mb-4 p-3 bg-green-50 border border-green-200 rounded-md">
+                <p class="text-sm text-green-600 flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    You have been logged out successfully
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <form th:action="@{/login}" method="post">
+                <!-- Email Input -->
+                <div class="mb-4">
+                    <input
+                            type="text"
+                            name="username"
+                            placeholder="Enter your username"
+                            required
+                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
+                    >
+                </div>
+
+
+
+                <!-- Password Input -->
+                <div class="mb-6">
+                    <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            required
+                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end">
+                    <button
+                            type="submit"
+                            class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-12 py-2.5 text-[15px] transition-colors"
+                    >
+                        Sign in
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

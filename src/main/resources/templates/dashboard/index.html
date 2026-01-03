@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASI Labo - Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
+</head>
+<body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay hidden fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-[999]" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
+    <div class="sidebar-header p-6 border-b border-[#E8E8E8] flex items-center gap-3">
+        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+    </div>
+
+    <nav class="p-3 flex-1 overflow-y-auto">
+        <div class="mb-6">
+            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3 whitespace-nowrap">Main Menu</div>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/}">
+                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Dashboard</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members & Roles</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+                <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/project/view}">
+                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Projects</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/pub}">
+                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Publications</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resource}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Resources</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="p-3 border-t border-[#E8E8E8]">
+        <form method="post" th:action="@{/logout}" class="m-0">
+            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] no-underline rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
+                <span>Sign Out</span>
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content ml-[250px] min-h-screen" id="mainContent">
+    <!-- Top Header -->
+    <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
+        <div class="flex items-center gap-4">
+            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" onclick="toggleSidebar()" title="Toggle Sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Dashboard</h1>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 py-2 px-3.5 border border-[#E8E8E8] rounded-md bg-white w-60 focus-within:border-[#00593E] focus-within:shadow-[0_0_0_3px_rgba(0,89,62,0.1)]">
+                <i class="fas fa-search text-[#999] text-sm"></i>
+                <input type="text" placeholder="Search..." class="border-none outline-none text-[13px] w-full bg-transparent placeholder:text-[#999]">
+            </div>
+            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer relative hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
+                <i class="fas fa-bell"></i>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-[#EF4444] rounded-full border-2 border-white"></span>
+            </button>
+
+            <!-- User Profile Dropdown -->
+            <div class="dropdown">
+                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
+                        <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
+                        <div class="text-[11px] text-[#999]" th:each="role : ${member.roles}" th:text="${role.getRolename()}">Role</div>
+                    </div>
+                    <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
+                    <li>
+                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
+                                    <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
+                                    <div class="text-xs text-[#666]" th:text="${member.getEmail()}">email@example.com</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
+                            <i class="fas fa-user w-4 text-sm"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                                <i class="fas fa-sign-out-alt w-4 text-sm"></i>
+                                Sign Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="p-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-[#1A1A1A] mb-2">Welcome back, <span th:text="${member.getFname()}">User</span>!</h2>
+            <p class="text-[15px] text-[#666]">Here's what's happening in your laboratory today.</p>
+        </div>
+
+        <!-- Stats Section (Admin Only) -->
+        <div th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+            <div class="grid grid-cols-4 gap-5 mb-8 max-[1400px]:grid-cols-2 max-[768px]:grid-cols-1">
+                <div class="bg-white border border-[#E8E8E8] rounded-[10px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[13px] text-[#666] font-medium">Total Members</span>
+                        <div class="w-10 h-10 rounded-lg bg-[#EFF6FF] flex items-center justify-center text-[#2563EB] text-base">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="text-[32px] font-bold text-[#1A1A1A] leading-none mb-2" th:text="${memberCount}">0</div>
+                    <div class="text-xs text-[#666]">
+                        <span class="text-[#16A34A] font-medium">Active researchers</span>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-[#E8E8E8] rounded-[10px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[13px] text-[#666] font-medium">Publications</span>
+                        <div class="w-10 h-10 rounded-lg bg-[#FFFBEB] flex items-center justify-center text-[#D97706] text-base">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                    <div class="text-[32px] font-bold text-[#1A1A1A] leading-none mb-2" th:text="${pubCount}">0</div>
+                    <div class="text-xs text-[#666]">Research papers</div>
+                </div>
+
+                <div class="bg-white border border-[#E8E8E8] rounded-[10px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[13px] text-[#666] font-medium">Projects</span>
+                        <div class="w-10 h-10 rounded-lg bg-[#F0FDF4] flex items-center justify-center text-[#16A34A] text-base">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                    </div>
+                    <div class="text-[32px] font-bold text-[#1A1A1A] leading-none mb-2" th:text="${projectCount}">0</div>
+                    <div class="text-xs text-[#666]">Active & completed</div>
+                </div>
+
+                <div class="bg-white border border-[#E8E8E8] rounded-[10px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[13px] text-[#666] font-medium">Resources</span>
+                        <div class="w-10 h-10 rounded-lg bg-[#FAF5FF] flex items-center justify-center text-[#9333EA] text-base">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                    <div class="text-[32px] font-bold text-[#1A1A1A] leading-none mb-2" th:text="${resourceCount}">0</div>
+                    <div class="text-xs text-[#666]">Lab equipment</div>
+                </div>
+            </div>
+
+            <!-- Role Distribution -->
+            <div class="flex flex-wrap gap-3 mb-8" th:if="${memberCountsByRole != null and !memberCountsByRole.isEmpty()}">
+                <div class="bg-white border border-[#E8E8E8] rounded-lg py-3 px-5 flex items-center gap-3" th:each="count : ${memberCountsByRole}">
+                    <span class="text-xl font-bold text-[#00593E]" th:text="${count[1]}">0</span>
+                    <span class="text-xs text-[#666] uppercase tracking-wide" th:text="${count[0]}">Role</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Cards -->
+        <div class="grid grid-cols-3 gap-5 max-[1200px]:grid-cols-1">
+            <!-- Latest Publications -->
+            <div class="bg-white border border-[#E8E8E8] rounded-[10px] overflow-hidden">
+                <div class="py-4 px-5 border-b border-[#E8E8E8] flex justify-between items-center bg-white">
+                    <span class="text-sm font-semibold text-[#1A1A1A] flex items-center gap-2">
+                        <i class="fas fa-file-alt text-[#00593E]"></i>
+                        Latest Publications
+                    </span>
+                    <a th:href="@{/pub}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                </div>
+                <div class="p-5">
+                    <div th:if="${latestPublicationTitles != null and !#lists.isEmpty(latestPublicationTitles)}">
+                        <div class="flex items-start gap-3 py-3.5 border-b border-[#F0F0F0] last:border-b-0 last:pb-0 first:pt-0" th:each="title : ${latestPublicationTitles}">
+                            <div class="w-9 h-9 rounded-lg bg-[#FFFBEB] flex items-center justify-center text-[#D97706] text-sm shrink-0">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-medium text-[#1A1A1A] mb-0.5 leading-snug" th:text="${title}">Publication Title</div>
+                                <div class="text-xs text-[#999]">Recent publication</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${latestPublicationTitles == null or #lists.isEmpty(latestPublicationTitles)}" class="text-center py-8 px-5 text-[#999]">
+                        <i class="fas fa-file-alt text-[32px] mb-3 opacity-50"></i>
+                        <p class="text-[13px]">No publications yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects in Progress -->
+            <div class="bg-white border border-[#E8E8E8] rounded-[10px] overflow-hidden">
+                <div class="py-4 px-5 border-b border-[#E8E8E8] flex justify-between items-center bg-white">
+                    <span class="text-sm font-semibold text-[#1A1A1A] flex items-center gap-2">
+                        <i class="fas fa-tasks text-[#00593E]"></i>
+                        Active Projects
+                    </span>
+                    <a th:href="@{/project/view}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                </div>
+                <div class="p-5">
+                    <div th:if="${projectsWithoutEndDate != null and !#lists.isEmpty(projectsWithoutEndDate)}">
+                        <div class="flex items-start gap-3 py-3.5 border-b border-[#F0F0F0] last:border-b-0 last:pb-0 first:pt-0" th:each="project : ${projectsWithoutEndDate}">
+                            <div class="w-9 h-9 rounded-lg bg-[#F0FDF4] flex items-center justify-center text-[#16A34A] text-sm shrink-0">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[13px] font-medium text-[#1A1A1A] mb-0.5 leading-snug" th:text="${project.title}">Project Title</div>
+                                <div class="text-xs">
+                                    <span class="py-1 px-2.5 rounded bg-[#F0FDF4] text-[#166534] text-[11px] font-medium inline-block">In Progress</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${projectsWithoutEndDate == null or #lists.isEmpty(projectsWithoutEndDate)}" class="text-center py-8 px-5 text-[#999]">
+                        <i class="fas fa-folder-open text-[32px] mb-3 opacity-50"></i>
+                        <p class="text-[13px]">No active projects</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Latest Members (Admin/Director Only) -->
+            <div class="bg-white border border-[#E8E8E8] rounded-[10px] overflow-hidden" th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMINISTRATEUR'',''ROLE_DIRECTEUR'')')}">
+                <div class="py-4 px-5 border-b border-[#E8E8E8] flex justify-between items-center bg-white">
+                    <span class="text-sm font-semibold text-[#1A1A1A] flex items-center gap-2">
+                        <i class="fas fa-user-plus text-[#00593E]"></i>
+                        New Members
+                    </span>
+                    <a th:href="@{/member}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                </div>
+                <div class="p-5">
+                    <div th:if="${last5Members != null and !#lists.isEmpty(last5Members)}">
+                        <div class="flex items-center gap-3 py-3 border-b border-[#F0F0F0] last:border-b-0" th:each="m : ${last5Members}">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#E8E8E8] to-[#D0D0D0] flex items-center justify-center text-[13px] font-semibold text-[#666]">
+                                <span th:text="${#strings.substring(m.fname, 0, 1)}">A</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-[13px] font-medium text-[#1A1A1A]">
+                                    <span th:text="${m.fname}">First</span>
+                                    <span th:text="${m.lname}">Last</span>
+                                </div>
+                                <div class="text-[11px] text-[#999]">Recently joined</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${last5Members == null or #lists.isEmpty(last5Members)}" class="text-center py-8 px-5 text-[#999]">
+                        <i class="fas fa-users text-[32px] mb-3 opacity-50"></i>
+                        <p class="text-[13px]">No members yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{../../static/js/main.js}" src="../../static/js/main.js"></script>
+</body>
+</html>
