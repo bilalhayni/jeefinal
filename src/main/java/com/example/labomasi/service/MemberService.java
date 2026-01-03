@@ -181,16 +181,16 @@ public class MemberService {
 
     public void addRoleToMember(Long memberId, Long roleId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Member", memberId));
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role", roleId));
         member.setRole(role);
         memberRepository.save(member);
     }
 
     public void removeRoleFromMember(Long memberId, Long roleId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Member", memberId));
         if (member.getRole() != null && member.getRole().getId().equals(roleId)) {
             member.setRole(null);
         }
