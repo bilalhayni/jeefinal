@@ -15,13 +15,153 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link th:href="@{/css/main.css}" href="../static/css/main.css" rel="stylesheet">
+    <style>
+        /* Sidebar Toggle Icon Animation */
+        .sidebar-toggle-icon {
+            width: 18px;
+            height: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-toggle-icon span {
+            display: block;
+            height: 2px;
+            background-color: #666;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle-icon span:nth-child(1) {
+            width: 100%;
+        }
+
+        .sidebar-toggle-icon span:nth-child(2) {
+            width: 70%;
+        }
+
+        .sidebar-toggle-icon span:nth-child(3) {
+            width: 100%;
+        }
+
+        .sidebar-toggle-btn:hover .sidebar-toggle-icon span {
+            background-color: #1A1A1A;
+        }
+
+        .sidebar-toggle-btn:hover .sidebar-toggle-icon span:nth-child(2) {
+            width: 100%;
+        }
+
+        /* Sidebar collapsed state */
+        .sidebar.collapsed {
+            width: 0;
+            overflow: hidden;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Profile Avatar Styles (ElevenLabs style) */
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+        }
+
+        /* Clean Notification Bell */
+        .notification-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .notification-btn:hover {
+            background-color: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background-color: #EF4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Dropdown menu styling */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-dropdown .dropdown-menu {
+            min-width: 240px;
+            padding: 8px;
+            border: 1px solid #E8E8E8;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 8px;
+        }
+
+        .profile-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-dropdown .dropdown-item:hover {
+            background-color: #F5F5F5;
+            color: #1A1A1A;
+        }
+
+        .profile-dropdown .dropdown-item.text-danger {
+            color: #EF4444;
+        }
+
+        .profile-dropdown .dropdown-item.text-danger:hover {
+            background-color: #FEF2F2;
+            color: #DC2626;
+        }
+    </style>
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
 <!-- Mobile Overlay -->
 <div class="sidebar-overlay hidden fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-[999]" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <!-- Sidebar -->
-<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
+<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000] transition-all duration-300" id="sidebar">
     <div class="sidebar-header p-6 border-b border-[#E8E8E8] flex items-center gap-3">
         <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
@@ -67,61 +207,67 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content ml-[250px] min-h-screen" id="mainContent">
+<main class="main-content ml-[250px] min-h-screen transition-all duration-300" id="mainContent">
     <!-- Top Header -->
-    <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
+    <header class="bg-white border-b border-[#E8E8E8] py-3 px-6 flex justify-between items-center sticky top-0 z-[100]">
         <div class="flex items-center gap-4">
-            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" onclick="toggleSidebar()" title="Toggle Sidebar">
-                <i class="fas fa-bars"></i>
+            <!-- ElevenLabs-style Sidebar Toggle Button -->
+            <button class="sidebar-toggle-btn w-10 h-10 rounded-lg bg-transparent border-none flex items-center justify-center cursor-pointer hover:bg-[#F5F5F5] transition-colors" onclick="toggleSidebar()" title="Toggle Sidebar">
+                <div class="sidebar-toggle-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </button>
-            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">
+
+            <h1 class="text-base font-semibold text-[#1A1A1A] m-0">
                 <span th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">Members & Roles</span>
                 <span th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">Members</span>
             </h1>
         </div>
 
-        <div class="flex items-center gap-4">
-            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer relative hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
-                <i class="fas fa-bell"></i>
-                <span class="absolute top-2 right-2 w-2 h-2 bg-[#EF4444] rounded-full border-2 border-white"></span>
+        <div class="flex items-center gap-2">
+            <!-- Clean Notification Bell (ElevenLabs style) -->
+            <button class="notification-btn">
+                <i class="fas fa-bell text-lg"></i>
+                <span class="notification-dot"></span>
             </button>
 
-            <!-- User Profile Dropdown -->
-            <div class="dropdown">
-                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
-                        <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
-                    </div>
-                    <div class="text-left">
-                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${#authentication.name}">User Name</div>
-                        <div class="text-[11px] text-[#999]" sec:authentication="principal.authorities">Role</div>
-                    </div>
-                    <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1"></i>
+            <!-- User Profile Dropdown (ElevenLabs style) -->
+            <div class="profile-dropdown dropdown">
+                <div class="profile-avatar" data-bs-toggle="dropdown" aria-expanded="false" title="Account">
+                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
+                <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
+                        <div class="px-3 py-3 border-b border-[#E8E8E8] mb-2">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
-                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#EC4899] to-[#F472B6] flex items-center justify-center font-semibold text-base text-white">
+                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                                 </div>
                                 <div class="flex-1">
                                     <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${#authentication.name}">User Name</div>
-                                    <div class="text-xs text-[#666]">Logged in user</div>
+                                    <div class="text-xs text-[#666]" sec:authentication="principal.authorities">Role</div>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
-                            <i class="fas fa-user w-4 text-sm"></i>
+                        <a class="dropdown-item" th:href="@{/profile}">
+                            <i class="fas fa-user w-4 text-sm text-[#999]"></i>
                             My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cog w-4 text-sm text-[#999]"></i>
+                            Settings
                         </a>
                     </li>
                     <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
                     <li>
                         <form th:action="@{/logout}" method="post" class="m-0">
-                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                            <button type="submit" class="dropdown-item text-danger w-full text-left">
                                 <i class="fas fa-sign-out-alt w-4 text-sm"></i>
                                 Sign Out
                             </button>
@@ -370,5 +516,32 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/main.js}" src="../static/js/main.js"></script>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+
+        // For mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('hidden');
+        }
+    }
+
+    // Handle responsive behavior
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('show');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+    });
+</script>
 </body>
 </html>
