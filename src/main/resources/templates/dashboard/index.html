@@ -33,11 +33,11 @@
                 <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Dashboard</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
                 <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Members & Roles</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/member}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
                 <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Members</span>
             </a>
@@ -267,7 +267,7 @@
                         <i class="fas fa-user-plus text-[#00593E]"></i>
                         New Members
                     </span>
-                    <a th:href="@{/member}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                    <a th:href="@{/members}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
                 </div>
                 <div class="p-5">
                     <div th:if="${last5Members != null and !#lists.isEmpty(last5Members)}">

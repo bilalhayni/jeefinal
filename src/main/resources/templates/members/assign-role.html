@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASI Labo - Assign Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/main.css}" href="../static/css/main.css" rel="stylesheet">
+</head>
+<body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+
+<!-- Sidebar -->
+<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
+    <div class="sidebar-header p-6 border-b border-[#E8E8E8] flex items-center gap-3">
+        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+    </div>
+    <nav class="p-3 flex-1 overflow-y-auto">
+        <div class="mb-6">
+            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3">Main Menu</div>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/}">
+                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/members}">
+                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
+                <span>Members & Roles</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/project/view}">
+                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
+                <span>Projects</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/pub}">
+                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
+                <span>Publications</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/resource}">
+                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
+                <span>Resources</span>
+            </a>
+        </div>
+    </nav>
+    <div class="p-3 border-t border-[#E8E8E8]">
+        <form method="post" th:action="@{/logout}" class="m-0">
+            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2]">
+                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
+                <span>Sign Out</span>
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content ml-[250px] min-h-screen" id="mainContent">
+    <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
+        <div class="flex items-center gap-4">
+            <a th:href="@{/members}" class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] hover:bg-[#F5F5F5]">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Assign Role</h1>
+        </div>
+    </header>
+
+    <div class="p-8">
+        <div class="max-w-xl mx-auto">
+            <div class="bg-white rounded-xl border border-[#E8E8E8] overflow-hidden shadow-sm">
+                <div class="px-6 py-4 border-b border-[#E8E8E8]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center text-white font-semibold">
+                            <span th:text="${#strings.substring(member.fname, 0, 1)}">A</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-[#1A1A1A]" th:text="${member.fname + ' ' + member.lname}">Member Name</h3>
+                            <p class="text-xs text-[#999]">@<span th:text="${member.username}">username</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <!-- Current Roles -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-[#1A1A1A] mb-2">Current Roles</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span th:each="role : ${member.roles}"
+                                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#F0FDF4] text-[#166534] border border-[#BBF7D0]">
+                                <i class="fas fa-shield-alt text-[10px]"></i>
+                                <span th:text="${role.rolename}">Role</span>
+                            </span>
+                            <span th:if="${#lists.isEmpty(member.roles)}" class="text-sm text-[#999]">No roles assigned</span>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div th:if="${error}" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                        <span th:text="${error}">Error message</span>
+                    </div>
+
+                    <form th:action="@{/members/{username}/roles(username=${member.username})}" th:object="${roleForm}" method="post" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Select Role to Add</label>
+                            <select th:field="*{roleName}"
+                                    class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]">
+                                <option value="">Choose a role</option>
+                                <option th:each="role : ${availableRoles}" th:value="${role.rolename}" th:text="${role.rolename}">Role</option>
+                            </select>
+                            <p th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}" class="text-red-500 text-xs mt-1"></p>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-[#E8E8E8]">
+                            <a th:href="@{/members}"
+                               class="px-4 py-2.5 border border-[#E8E8E8] text-[#666] font-medium rounded-lg hover:bg-[#F5F5F5] transition-colors">
+                                Cancel
+                            </a>
+                            <button type="submit"
+                                    class="px-4 py-2.5 bg-[#00593E] hover:bg-[#004D35] text-white font-medium rounded-lg transition-colors">
+                                <i class="fas fa-user-plus mr-2"></i>Assign Role
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}" src="../static/js/main.js"></script>
+</body>
+</html>

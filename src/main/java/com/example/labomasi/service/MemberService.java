@@ -1,5 +1,9 @@
 package com.example.labomasi.service;
 
+import com.example.labomasi.exception.BadRequestException;
+import com.example.labomasi.exception.ResourceNotFoundException;
+import com.example.labomasi.model.dto.form.MemberCreateForm;
+import com.example.labomasi.model.dto.form.MemberEditForm;
 import com.example.labomasi.model.entity.Member;
 import com.example.labomasi.model.entity.Role;
 import com.example.labomasi.repository.MemberRepository;
@@ -40,12 +44,91 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
+    public Member getByUsername(String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Member", "username", username));
+    }
+
     public Optional<Member> findByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 
     public Page<Member> searchByLastName(String keyword, Pageable pageable) {
         return memberRepository.findByLnameContainingIgnoreCase(keyword, pageable);
+    }
+
+    /**
+     * Creates a new member from the form data.
+     * Business logic: validates uniqueness, encodes password, sets uppercase lastname, assigns role.
+     */
+    public Member createMember(MemberCreateForm form) {
+        // Validate username uniqueness
+        if (memberRepository.existsByUsername(form.getUsername())) {
+            throw new BadRequestException("Username already exists");
+        }
+
+        // Validate email uniqueness
+        if (memberRepository.existsByEmail(form.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+
+        // Validate password confirmation
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            throw new BadRequestException("Passwords do not match");
+        }
+
+        // Find the role
+        Role role = roleRepository.findById(form.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role", form.getRoleId()));
+
+        // Build the member entity
+        Member member = Member.builder()
+                .fname(form.getFirstName())
+                .lname(form.getLastName().toUpperCase()) // Uppercase lastname
+                .username(form.getUsername())
+                .email(form.getEmail())
+                .password(passwordEncoder.encode(form.getPassword()))
+                .phone(form.getPhone())
+                .createdAt(LocalDate.now())
+                .build();
+
+        // Assign the role
+        member.getRoles().add(role);
+
+        return memberRepository.save(member);
+    }
+
+    /**
+     * Updates an existing member.
+     * Business logic: validates email if changed, encodes password if provided, uppercase lastname.
+     */
+    public Member updateMember(String username, MemberEditForm form) {
+        Member member = getByUsername(username);
+
+        // Check email uniqueness if changed
+        if (!member.getEmail().equals(form.getEmail()) && memberRepository.existsByEmail(form.getEmail())) {
+            throw new BadRequestException("Email already exists");
+        }
+
+        member.setFname(form.getFirstName());
+        member.setLname(form.getLastName().toUpperCase()); // Uppercase lastname
+        member.setEmail(form.getEmail());
+        member.setPhone(form.getPhone());
+
+        // Only update password if provided
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            member.setPassword(passwordEncoder.encode(form.getPassword()));
+        }
+
+        return memberRepository.save(member);
+    }
+
+    /**
+     * Deletes a member by username.
+     */
+    public void deleteByUsername(String username) {
+        Member member = getByUsername(username);
+        memberRepository.delete(member);
     }
 
     public Member save(Member member) {
@@ -70,6 +153,36 @@ public class MemberService {
 
     public boolean existsByEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    /**
+     * Adds a role to a member by username and role name.
+     */
+    public void addRoleToMember(String username, String roleName) {
+        Member member = getByUsername(username);
+        Role role = roleRepository.findByRolename(roleName)
+                .orElseThrow(() -> new ResourceNotFoundException("Role", "name", roleName));
+
+        if (member.getRoles().stream().anyMatch(r -> r.getRolename().equals(roleName))) {
+            throw new BadRequestException("Member already has this role");
+        }
+
+        member.getRoles().add(role);
+        memberRepository.save(member);
+    }
+
+    /**
+     * Removes a role from a member by username and role name.
+     */
+    public void removeRoleFromMember(String username, String roleName) {
+        Member member = getByUsername(username);
+
+        boolean removed = member.getRoles().removeIf(role -> role.getRolename().equals(roleName));
+        if (!removed) {
+            throw new BadRequestException("Member does not have this role");
+        }
+
+        memberRepository.save(member);
     }
 
     public void addRoleToMember(Long memberId, Long roleId) {
