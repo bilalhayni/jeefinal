@@ -33,4 +33,7 @@ public class MemberEditForm {
 
     @Size(min = 6, message = "Password must be at least 6 characters if provided")
     private String password;
+
+    @NotNull(message = "Role is required")
+    private Long roleId;
 }

@@ -3,7 +3,6 @@ package com.example.labomasi.controller;
 import com.example.labomasi.exception.BadRequestException;
 import com.example.labomasi.model.dto.form.MemberCreateForm;
 import com.example.labomasi.model.dto.form.MemberEditForm;
-import com.example.labomasi.model.dto.form.RoleAssignForm;
 import com.example.labomasi.model.entity.Member;
 import com.example.labomasi.service.MemberService;
 import com.example.labomasi.service.RoleService;
@@ -101,10 +100,12 @@ public class MemberController {
                 .lastName(member.getLname())
                 .email(member.getEmail())
                 .phone(member.getPhone())
+                .roleId(member.getRole() != null ? member.getRole().getId() : null)
                 .build();
 
         model.addAttribute("member", member);
         model.addAttribute("memberForm", form);
+        model.addAttribute("roles", roleService.findAll());
         return "members/edit";
     }
 
@@ -143,64 +144,6 @@ public class MemberController {
     public String deleteMember(@PathVariable String username, RedirectAttributes redirectAttributes) {
         memberService.deleteByUsername(username);
         redirectAttributes.addFlashAttribute("success", "Member deleted successfully");
-        return "redirect:/members";
-    }
-
-    /**
-     * GET /members/{username}/roles/new - Show role assignment form
-     */
-    @GetMapping("/{username}/roles/new")
-    public String showAddRoleForm(@PathVariable String username, Model model) {
-        Member member = memberService.getByUsername(username);
-        model.addAttribute("member", member);
-        model.addAttribute("roleForm", new RoleAssignForm());
-        model.addAttribute("availableRoles", roleService.findAll());
-        return "members/assign-role";
-    }
-
-    /**
-     * POST /members/{username}/roles - Add role to member
-     */
-    @PostMapping("/{username}/roles")
-    public String addRoleToMember(@PathVariable String username,
-                                  @Valid @ModelAttribute("roleForm") RoleAssignForm form,
-                                  BindingResult bindingResult,
-                                  Model model,
-                                  RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            Member member = memberService.getByUsername(username);
-            model.addAttribute("member", member);
-            model.addAttribute("availableRoles", roleService.findAll());
-            return "members/assign-role";
-        }
-
-        try {
-            memberService.addRoleToMember(username, form.getRoleName());
-            redirectAttributes.addFlashAttribute("success", "Role assigned successfully");
-            return "redirect:/members";
-        } catch (BadRequestException e) {
-            Member member = memberService.getByUsername(username);
-            model.addAttribute("member", member);
-            model.addAttribute("availableRoles", roleService.findAll());
-            model.addAttribute("error", e.getMessage());
-            return "members/assign-role";
-        }
-    }
-
-    /**
-     * POST /members/{username}/roles/{roleName}/delete - Remove role from member
-     */
-    @PostMapping("/{username}/roles/{roleName}/delete")
-    public String removeRoleFromMember(@PathVariable String username,
-                                       @PathVariable String roleName,
-                                       RedirectAttributes redirectAttributes) {
-        try {
-            memberService.removeRoleFromMember(username, roleName);
-            redirectAttributes.addFlashAttribute("success", "Role removed successfully");
-        } catch (BadRequestException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
         return "redirect:/members";
     }
 }
