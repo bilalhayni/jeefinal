@@ -41,7 +41,7 @@ public class PublicationController {
     public String showAddForm(Model model) {
         model.addAttribute("publication", new Publication());
         model.addAttribute("projects", projectService.findAll());
-        return "publications/addPub";
+        return "publications/create";
     }
 
     @PostMapping("/add")
