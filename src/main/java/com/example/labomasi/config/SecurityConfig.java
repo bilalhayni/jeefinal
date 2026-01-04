@@ -50,10 +50,9 @@ public class SecurityConfig {
                         .requestMatchers("/members/new").hasRole("ADMINISTRATEUR")
                         // Member profile view - any authenticated user (could be viewing own profile)
                         .requestMatchers("/members/*").authenticated()
-                        // Member edit/delete/roles - ADMINISTRATEUR only
+                        // Member edit/delete - ADMINISTRATEUR only
                         .requestMatchers("/members/*/edit").hasRole("ADMINISTRATEUR")
                         .requestMatchers("/members/*/delete").hasRole("ADMINISTRATEUR")
-                        .requestMatchers("/members/*/roles/**").hasRole("ADMINISTRATEUR")
 
                         // Resource management - ADMINISTRATEUR only
                         .requestMatchers("/resource/**").hasRole("ADMINISTRATEUR")

@@ -90,17 +90,15 @@ public class MemberService {
                 .password(passwordEncoder.encode(form.getPassword()))
                 .phone(form.getPhone())
                 .createdAt(LocalDate.now())
+                .role(role)
                 .build();
-
-        // Assign the role
-        member.getRoles().add(role);
 
         return memberRepository.save(member);
     }
 
     /**
      * Updates an existing member.
-     * Business logic: validates email if changed, encodes password if provided, uppercase lastname.
+     * Business logic: validates email if changed, encodes password if provided, uppercase lastname, updates role.
      */
     public Member updateMember(String username, MemberEditForm form) {
         Member member = getByUsername(username);
@@ -118,6 +116,13 @@ public class MemberService {
         // Only update password if provided
         if (form.getPassword() != null && !form.getPassword().isEmpty()) {
             member.setPassword(passwordEncoder.encode(form.getPassword()));
+        }
+
+        // Update role if provided
+        if (form.getRoleId() != null) {
+            Role role = roleRepository.findById(form.getRoleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Role", form.getRoleId()));
+            member.setRole(role);
         }
 
         return memberRepository.save(member);
@@ -153,52 +158,6 @@ public class MemberService {
 
     public boolean existsByEmail(String email) {
         return memberRepository.existsByEmail(email);
-    }
-
-    /**
-     * Adds a role to a member by username and role name.
-     */
-    public void addRoleToMember(String username, String roleName) {
-        Member member = getByUsername(username);
-        Role role = roleRepository.findByRolename(roleName)
-                .orElseThrow(() -> new ResourceNotFoundException("Role", "name", roleName));
-
-        if (member.getRoles().stream().anyMatch(r -> r.getRolename().equals(roleName))) {
-            throw new BadRequestException("Member already has this role");
-        }
-
-        member.getRoles().add(role);
-        memberRepository.save(member);
-    }
-
-    /**
-     * Removes a role from a member by username and role name.
-     */
-    public void removeRoleFromMember(String username, String roleName) {
-        Member member = getByUsername(username);
-
-        boolean removed = member.getRoles().removeIf(role -> role.getRolename().equals(roleName));
-        if (!removed) {
-            throw new BadRequestException("Member does not have this role");
-        }
-
-        memberRepository.save(member);
-    }
-
-    public void addRoleToMember(Long memberId, Long roleId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-        Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        member.getRoles().add(role);
-        memberRepository.save(member);
-    }
-
-    public void removeRoleFromMember(Long memberId, Long roleId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-        member.getRoles().removeIf(role -> role.getId().equals(roleId));
-        memberRepository.save(member);
     }
 
     public long count() {
