@@ -25,6 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findTop5ByOrderByCreatedAtDesc();
 
-    @Query("SELECT r.rolename, COUNT(m) FROM Member m JOIN m.roles r GROUP BY r.rolename")
+    //@Query("SELECT r.rolename, COUNT(m) FROM Member m JOIN m.roles r GROUP BY r.rolename")
+    @Query("SELECT r.rolename, COUNT(m) FROM Member m JOIN m.role r GROUP BY r.rolename")
     List<Object[]> countMembersByRole();
 }

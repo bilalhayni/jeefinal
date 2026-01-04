@@ -20,5 +20,5 @@ public class MemberRequest {
     private String password;
     private String confirmPassword;
     private String phone;
-    private List<Long> roleIds;
+    private Long roleId;
 }

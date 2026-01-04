@@ -63,9 +63,10 @@ public class DataInitializer {
                     .password(passwordEncoder.encode("admin123"))
                     .phone("")
                     .createdAt(LocalDate.now())
+                    .role(adminRole)
                     .build();
 
-            admin.getRoles().add(adminRole);
+            //admin.getRoles().add(adminRole);
             memberRepository.save(admin);
 
             log.info("=================================");
