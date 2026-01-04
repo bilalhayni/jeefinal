@@ -22,7 +22,8 @@ public class Role {
     @Column(name = "role_name", nullable = false, unique = true, length = 50)
     private String rolename;
 
-    @ManyToMany(mappedBy = "roles")
+    // One Role -> Many Members
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     @Builder.Default
     private List<Member> members = new ArrayList<>();
 }

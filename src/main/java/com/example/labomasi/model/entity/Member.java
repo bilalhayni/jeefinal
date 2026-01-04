@@ -39,7 +39,8 @@ public class Member {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    // Many Members -> One Role (each member has exactly one role)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 }
