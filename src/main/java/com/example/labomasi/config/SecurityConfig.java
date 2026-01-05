@@ -39,7 +39,7 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         // Static resources
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
 
                         // Error pages - handled by Spring Boot's error controller
                         .requestMatchers("/error", "/error/**").permitAll()

@@ -4,36 +4,23 @@ function toggleSidebar() {
     const mainContent = document.getElementById('mainContent');
     const overlay = document.getElementById('sidebarOverlay');
 
-    // Check if mobile
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('mobile-open');
-        overlay.classList.toggle('active');
-    } else {
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-    }
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
 
-    // Save state to localStorage
-    const isCollapsed = sidebar.classList.contains('collapsed');
-    localStorage.setItem('sidebarCollapsed', isCollapsed);
+    // For mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('hidden');
+    }
 }
 
-// Restore sidebar state on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isCollapsed && window.innerWidth > 768) {
-        document.getElementById('sidebar').classList.add('collapsed');
-        document.getElementById('mainContent').classList.add('expanded');
-    }
-});
-
-// Handle window resize
+// Handle responsive behavior
 window.addEventListener('resize', function() {
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
+    const mainContent = document.getElementById('mainContent');
 
     if (window.innerWidth > 768) {
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('active');
+        sidebar.classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.add('hidden');
     }
 });
