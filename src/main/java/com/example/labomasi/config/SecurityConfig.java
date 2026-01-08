@@ -41,6 +41,9 @@ public class SecurityConfig {
                         // Static resources
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
 
+                        // Registration page - public access
+                        .requestMatchers("/register").permitAll()
+
                         // Error pages - handled by Spring Boot's error controller
                         .requestMatchers("/error", "/error/**").permitAll()
 
