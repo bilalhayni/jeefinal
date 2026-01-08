@@ -17,9 +17,6 @@
     <link th:href="@{/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
-<!-- Mobile Overlay -->
-<div class="sidebar-overlay hidden fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-[999]" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
     <div class="sidebar-header p-6 border-b border-[#E8E8E8] flex items-center gap-3">
@@ -71,22 +68,10 @@
     <!-- Top Header -->
     <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
         <div class="flex items-center gap-4">
-            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" onclick="toggleSidebar()" title="Toggle Sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
             <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Dashboard</h1>
         </div>
 
         <div class="flex items-center gap-4">
-            <div class="hidden md:flex items-center gap-2 py-2 px-3.5 border border-[#E8E8E8] rounded-md bg-white w-60 focus-within:border-[#00593E] focus-within:shadow-[0_0_0_3px_rgba(0,89,62,0.1)]">
-                <i class="fas fa-search text-[#999] text-sm"></i>
-                <input type="text" placeholder="Search..." class="border-none outline-none text-[13px] w-full bg-transparent placeholder:text-[#999]">
-            </div>
-            <button class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] cursor-pointer relative hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
-                <i class="fas fa-bell"></i>
-                <span class="absolute top-2 right-2 w-2 h-2 bg-[#EF4444] rounded-full border-2 border-white"></span>
-            </button>
-
             <!-- User Profile Dropdown -->
             <div class="dropdown">
                 <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,8 +79,7 @@
                         <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
                     </div>
                     <div class="text-left">
-                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
-                        <div class="text-[11px] text-[#999]" th:text="${member.role != null ? member.role.rolename : 'Role'}">Role</div>
+                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${member.getFname()}">User Name</div>
                     </div>
                     <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1"></i>
                 </div>
@@ -117,6 +101,12 @@
                         <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
                             <i class="fas fa-user w-4 text-sm"></i>
                             My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/changepassword}">
+                            <i class="fas fa-key w-4 text-sm"></i>
+                            Change Password
                         </a>
                     </li>
                     <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
