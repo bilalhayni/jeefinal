@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/pub")
+@RequestMapping("/publications")
 public class PublicationController {
 
     private final PublicationService publicationService;
@@ -54,14 +54,14 @@ public class PublicationController {
         }
 
         publicationService.save(publication);
-        return "redirect:/pub";
+        return "redirect:/publications";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Publication publication = publicationService.findById(id).orElse(null);
         if (publication == null) {
-            return "redirect:/pub";
+            return "redirect:/publications";
         }
 
         model.addAttribute("publication", publication);
@@ -76,7 +76,7 @@ public class PublicationController {
 
         Publication publication = publicationService.findById(id).orElse(null);
         if (publication == null) {
-            return "redirect:/pub";
+            return "redirect:/publications";
         }
 
         publication.setTitle(updatedPublication.getTitle());
@@ -89,13 +89,13 @@ public class PublicationController {
         }
 
         publicationService.save(publication);
-        return "redirect:/pub";
+        return "redirect:/publications";
     }
 
     @GetMapping("/delete/{id}")
     public String deletePublication(@PathVariable Long id) {
         publicationService.deleteById(id);
-        return "redirect:/pub";
+        return "redirect:/publications";
     }
 
     @GetMapping("/latest")

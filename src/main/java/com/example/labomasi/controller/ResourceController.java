@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/resource")
+@RequestMapping("/resources")
 public class ResourceController {
 
     private final ResourceService resourceService;
@@ -41,14 +41,14 @@ public class ResourceController {
     @PostMapping("/add")
     public String addResource(@ModelAttribute Resource resource) {
         resourceService.save(resource);
-        return "redirect:/resource";
+        return "redirect:/resources";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Resource resource = resourceService.findById(id).orElse(null);
         if (resource == null) {
-            return "redirect:/resource";
+            return "redirect:/resources";
         }
         model.addAttribute("resource", resource);
         return "resources/edit";
@@ -58,7 +58,7 @@ public class ResourceController {
     public String updateResource(@PathVariable Long id, @ModelAttribute Resource updatedResource) {
         Resource resource = resourceService.findById(id).orElse(null);
         if (resource == null) {
-            return "redirect:/resource";
+            return "redirect:/resources";
         }
 
         resource.setName(updatedResource.getName());
@@ -66,12 +66,12 @@ public class ResourceController {
         resource.setAvailability(updatedResource.getAvailability());
 
         resourceService.save(resource);
-        return "redirect:/resource";
+        return "redirect:/resources";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteResource(@PathVariable Long id) {
         resourceService.deleteById(id);
-        return "redirect:/resource";
+        return "redirect:/resources";
     }
 }
