@@ -29,15 +29,15 @@
                 <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
                 <span>Members & Roles</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/project/view}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/projects}">
                 <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
                 <span>Projects</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/pub}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/publications}">
                 <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
                 <span>Publications</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/resource}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
                 <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
                 <span>Resources</span>
             </a>
@@ -57,7 +57,7 @@
 <main class="main-content ml-[250px] min-h-screen" id="mainContent">
     <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
         <div class="flex items-center gap-4">
-            <a th:href="@{/pub}" class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] hover:bg-[#F5F5F5]">
+            <a th:href="@{/publications}" class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] hover:bg-[#F5F5F5]">
                 <i class="fas fa-arrow-left"></i>
             </a>
             <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Latest Publications</h1>
@@ -103,7 +103,7 @@
             </div>
             <h4 class="text-[#1A1A1A] font-medium mb-1">No publications yet</h4>
             <p class="text-[#999] text-sm mb-4">There are no publications to display.</p>
-            <a th:href="@{/pub}"
+            <a th:href="@{/publications}"
                class="inline-flex items-center gap-2 px-4 py-2 bg-[#00593E] hover:bg-[#004D35] text-white text-sm font-medium rounded-lg transition-colors">
                 <i class="fas fa-arrow-left"></i>
                 Back to Publications
@@ -112,7 +112,7 @@
 
         <!-- View All Link -->
         <div class="mt-6 text-center" th:if="${latestPublicationTitles != null and !latestPublicationTitles.isEmpty()}">
-            <a th:href="@{/pub}"
+            <a th:href="@{/publications}"
                class="inline-flex items-center gap-2 px-6 py-3 bg-[#00593E] hover:bg-[#004D35] text-white font-medium rounded-lg transition-colors">
                 <i class="fas fa-list"></i>
                 View All Publications

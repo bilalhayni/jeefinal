@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/role")
+@RequestMapping("/roles")
 public class RoleController {
 
     private final RoleService roleService;
 
-    @GetMapping("s")
+    @GetMapping("")
     public String listRoles(Model model) {
         model.addAttribute("roles", roleService.findAll());
         return "roles/view";

@@ -41,15 +41,15 @@
                 <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Members</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/project/view}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/projects}">
                 <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Projects</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/pub}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/publications}">
                 <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Publications</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resource}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
                 <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Resources</span>
             </a>
@@ -209,7 +209,7 @@
                         <i class="fas fa-file-alt text-[#00593E]"></i>
                         Latest Publications
                     </span>
-                    <a th:href="@{/pub}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                    <a th:href="@{/publications}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
                 </div>
                 <div class="p-5">
                     <div th:if="${latestPublicationTitles != null and !#lists.isEmpty(latestPublicationTitles)}">
@@ -237,7 +237,7 @@
                         <i class="fas fa-tasks text-[#00593E]"></i>
                         Active Projects
                     </span>
-                    <a th:href="@{/project/view}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
+                    <a th:href="@{/projects}" class="bg-white border border-[#E8E8E8] text-[#1A1A1A] py-1.5 px-3 rounded-md text-xs font-medium cursor-pointer no-underline hover:bg-[#F5F5F5] hover:border-[#DDD]">View All</a>
                 </div>
                 <div class="p-5">
                     <div th:if="${projectsWithoutEndDate != null and !#lists.isEmpty(projectsWithoutEndDate)}">

@@ -58,19 +58,19 @@ public class SecurityConfig {
                         .requestMatchers("/members/*/delete").hasRole("ADMINISTRATEUR")
 
                         // Resource management - ADMINISTRATEUR only
-                        .requestMatchers("/resource/**").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/resources/**").hasRole("ADMINISTRATEUR")
 
                         // Role management - ADMINISTRATEUR only
-                        .requestMatchers("/roles", "/role/**").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/roles/**").hasRole("ADMINISTRATEUR")
 
                         // Project management
-                        .requestMatchers("/project/view", "/project/en-cours").authenticated()
-                        .requestMatchers("/project/add", "/project/update/**", "/project/delete/**").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/projects", "/projects/in-progress").authenticated()
+                        .requestMatchers("/projects/add", "/projects/update/**", "/projects/delete/**").hasRole("ADMINISTRATEUR")
 
                         // Publication management
-                        .requestMatchers("/pub", "/pub/latest").authenticated()
-                        .requestMatchers("/pub/add").hasAnyRole("ENSEIGNANT", "ADMINISTRATEUR")
-                        .requestMatchers("/pub/edit/**", "/pub/delete/**").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/publications", "/publications/latest").authenticated()
+                        .requestMatchers("/publications/add").hasAnyRole("ENSEIGNANT", "ADMINISTRATEUR")
+                        .requestMatchers("/publications/edit/**", "/publications/delete/**").hasRole("ADMINISTRATEUR")
 
                         // Profile - any authenticated user
                         .requestMatchers("/profile/**").authenticated()

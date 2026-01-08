@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping("/view")
+    @GetMapping("")
     public String listProjects(Model model,
                                @RequestParam(name = "page", defaultValue = "0") int page,
                                @RequestParam(name = "size", defaultValue = "6") int size,
@@ -41,14 +41,14 @@ public class ProjectController {
     @PostMapping("/add")
     public String addProject(@ModelAttribute Project project) {
         projectService.save(project);
-        return "redirect:/project/view";
+        return "redirect:/projects";
     }
 
     @GetMapping("/update/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Project project = projectService.findById(id).orElse(null);
         if (project == null) {
-            return "redirect:/project/view";
+            return "redirect:/projects";
         }
         model.addAttribute("project", project);
         return "projects/edit";
@@ -58,7 +58,7 @@ public class ProjectController {
     public String updateProject(@PathVariable Long id, @ModelAttribute Project updatedProject) {
         Project project = projectService.findById(id).orElse(null);
         if (project == null) {
-            return "redirect:/project/view";
+            return "redirect:/projects";
         }
 
         project.setTitle(updatedProject.getTitle());
@@ -67,16 +67,16 @@ public class ProjectController {
         project.setEndDate(updatedProject.getEndDate());
 
         projectService.save(project);
-        return "redirect:/project/view";
+        return "redirect:/projects";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteProject(@PathVariable Long id) {
         projectService.deleteById(id);
-        return "redirect:/project/view";
+        return "redirect:/projects";
     }
 
-    @GetMapping("/en-cours")
+    @GetMapping("/in-progress")
     public String activeProjects(Model model) {
         model.addAttribute("projectsWithoutEndDate", projectService.findActiveProjects());
         return "projects/en-cours";
