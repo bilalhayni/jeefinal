@@ -41,51 +41,50 @@
         }
     </script>
 </head>
-<body class="bg-gray-50">
+<body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
 <!-- Mobile Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
+<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
+    <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
         <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
-
     </div>
 
-    <nav class="sidebar-nav">
-        <div class="nav-section">
-            <div class="nav-section-title">Main Menu</div>
-            <a class="nav-item" th:href="@{/}">
-                <i class="fas fa-th-large"></i>
-                <span>Dashboard</span>
+    <nav class="p-3 flex-1 overflow-y-auto">
+        <div class="mb-6">
+            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3 whitespace-nowrap">Main Menu</div>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/}">
+                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Dashboard</span>
             </a>
-            <a class="nav-item" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-users-cog"></i>
-                <span>Members & Roles</span>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members & Roles</span>
             </a>
-            <a class="nav-item" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
-                <i class="fas fa-users"></i>
-                <span>Members</span>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+                <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members</span>
             </a>
-            <a class="nav-item active" th:href="@{/projects}">
-                <i class="fas fa-folder-open"></i>
-                <span>Projects</span>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/projects}">
+                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Projects</span>
             </a>
-            <a class="nav-item" th:href="@{/publications}">
-                <i class="fas fa-file-alt"></i>
-                <span>Publications</span>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/publications}">
+                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Publications</span>
             </a>
-            <a class="nav-item" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-box"></i>
-                <span>Resources</span>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Resources</span>
             </a>
         </div>
     </nav>
 
-    <div class="sidebar-footer">
-        <form method="post" th:action="@{/logout}" style="margin: 0;">
-            <button type="submit" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
+    <div class="p-3 border-t border-[#E8E8E8]">
+        <form method="post" th:action="@{/logout}" class="m-0">
+            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] no-underline rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
                 <span>Sign Out</span>
             </button>
         </form>
@@ -93,59 +92,60 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content" id="mainContent">
+<main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
     <!-- Top Header -->
-    <header class="top-header">
-        <div class="header-left">
-            <button class="toggle-sidebar" onclick="toggleSidebar()" title="Toggle Sidebar">
+    <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-4 flex justify-between items-center sticky top-0 z-[100] md:px-6">
+        <div class="flex items-center gap-3">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 class="page-title">Projects</h1>
+            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Projects</h1>
         </div>
 
-        <div class="header-actions">
-            <button class="btn-icon">
-                <i class="fas fa-bell"></i>
-                <span class="badge-dot"></span>
-            </button>
-
+        <div class="flex items-center gap-4">
             <!-- User Profile Dropdown -->
             <div class="dropdown">
-                <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="user-avatar">
-                        <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
+                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
+                        <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                     </div>
-                    <div class="user-details">
-                        <div class="user-name" th:text="${#authentication.name}">User Name</div>
-                        <div class="user-role" sec:authentication="principal.authorities">Role</div>
+                    <div class="text-left hidden sm:block">
+                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${#authentication.name}">User Name</div>
                     </div>
-                    <i class="fas fa-chevron-down text-gray-400 text-xs ml-1"></i>
+                    <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1 hidden sm:block"></i>
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
                     <li>
-                        <div class="dropdown-header">
-                            <div class="user-info">
-                                <div class="user-avatar-lg">
-                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">A</span>
+                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
+                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                                 </div>
-                                <div class="user-meta">
-                                    <div class="name" th:text="${#authentication.name}">User Name</div>
-                                    <div class="email text-gray-500 text-xs">Logged in user</div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${#authentication.name}">User Name</div>
+                                    <div class="text-xs text-[#666]" sec:authentication="principal.authorities">Role</div>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a class="dropdown-item" th:href="@{/profile}">
-                            <i class="fas fa-user"></i>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
+                            <i class="fas fa-user w-4 text-sm"></i>
                             My Profile
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider"></li>
                     <li>
-                        <form th:action="@{/logout}" method="post" style="margin: 0;">
-                            <button type="submit" class="dropdown-item text-danger">
-                                <i class="fas fa-sign-out-alt"></i>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/changepassword}">
+                            <i class="fas fa-key w-4 text-sm"></i>
+                            Change Password
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                                <i class="fas fa-sign-out-alt w-4 text-sm"></i>
                                 Sign Out
                             </button>
                         </form>
@@ -156,7 +156,7 @@
     </header>
 
     <!-- Content Area -->
-    <div class="p-8">
+    <div class="p-4 md:p-6 lg:p-8">
         <!-- Page Header with Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>

@@ -12,10 +12,12 @@
     <link th:href="@{../../static/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
-    <div class="sidebar-header p-6 border-b border-[#E8E8E8] flex items-center gap-3">
+    <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
         <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
     <nav class="p-3 flex-1 overflow-y-auto">
@@ -54,9 +56,13 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content ml-[250px] min-h-screen" id="mainContent">
-    <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
-        <div class="flex items-center gap-4">
+<main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
+    <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-4 flex justify-between items-center sticky top-0 z-[100] md:px-6">
+        <div class="flex items-center gap-3">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <a th:href="@{/projects}" class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] hover:bg-[#F5F5F5]">
                 <i class="fas fa-arrow-left"></i>
             </a>
@@ -64,7 +70,7 @@
         </div>
     </header>
 
-    <div class="p-8">
+    <div class="p-4 md:p-6 lg:p-8">
         <div class="max-w-2xl mx-auto">
             <div class="bg-white rounded-xl border border-[#E8E8E8] overflow-hidden shadow-sm">
                 <div class="px-6 py-4 border-b border-[#E8E8E8]">

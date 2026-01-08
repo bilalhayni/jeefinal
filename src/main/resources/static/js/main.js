@@ -4,28 +4,20 @@
  */
 
 // ================================
-// Sidebar Management
+// Mobile Sidebar Management
 // ================================
-function toggleSidebar() {
+function toggleMobileSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
     const overlay = document.getElementById('sidebarOverlay');
 
-    if (window.innerWidth <= 768) {
-        // Mobile: toggle mobile-open class
+    if (sidebar) {
         sidebar.classList.toggle('mobile-open');
-        if (overlay) {
-            overlay.classList.toggle('active');
-        }
-    } else {
-        // Desktop: toggle collapsed class
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-
-        // Save preference to localStorage
-        const isCollapsed = sidebar.classList.contains('collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
     }
+    if (overlay) {
+        overlay.classList.toggle('active');
+    }
+    // Prevent body scroll when sidebar is open
+    document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
 }
 
 // Close sidebar when clicking overlay
@@ -33,30 +25,31 @@ function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
 
-    sidebar.classList.remove('mobile-open');
+    if (sidebar) {
+        sidebar.classList.remove('mobile-open');
+    }
     if (overlay) {
         overlay.classList.remove('active');
     }
+    document.body.style.overflow = '';
 }
 
 // ================================
 // Initialization
 // ================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Restore sidebar state from localStorage
-    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isCollapsed && window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        if (sidebar) sidebar.classList.add('collapsed');
-        if (mainContent) mainContent.classList.add('expanded');
-    }
-
     // Setup overlay click handler
     const overlay = document.getElementById('sidebarOverlay');
     if (overlay) {
         overlay.addEventListener('click', closeSidebar);
     }
+
+    // Close sidebar on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSidebar();
+        }
+    });
 });
 
 // ================================
@@ -70,6 +63,7 @@ window.addEventListener('resize', function() {
         // Remove mobile classes on resize to desktop
         if (sidebar) sidebar.classList.remove('mobile-open');
         if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
     }
 });
 
