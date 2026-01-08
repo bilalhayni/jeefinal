@@ -15,6 +15,11 @@
         .moroccan-pattern {
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.15'/%3E%3Cpath d='M30 10L50 30L30 50L10 30L30 10z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
         }
+        .step { display: none; }
+        .step.active { display: block; }
+        .step-indicator { transition: all 0.3s ease; }
+        .step-indicator.completed { background-color: #00593E; color: white; }
+        .step-indicator.active { border-color: #00593E; color: #00593E; }
     </style>
 </head>
 <body class="min-h-screen font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#E8ECF0] relative overflow-hidden">
@@ -33,7 +38,7 @@
 
 <!-- Register Container -->
 <div class="min-h-screen flex items-center justify-center p-4 relative z-10">
-    <div class="w-full max-w-[520px]">
+    <div class="w-full max-w-[480px]">
         <!-- Register Card -->
         <div class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.2)] p-11">
             <!-- Logo -->
@@ -42,7 +47,16 @@
             </div>
 
             <!-- Title -->
-            <h1 class="text-2xl font-semibold text-[#1A1A1A] mb-6">Create Account</h1>
+            <h1 class="text-2xl font-semibold text-[#1A1A1A] mb-2">Create Account</h1>
+
+            <!-- Step Indicators -->
+            <div class="flex items-center justify-center gap-3 mb-8">
+                <div id="indicator-1" class="step-indicator w-8 h-8 rounded-full border-2 border-[#00593E] flex items-center justify-center text-sm font-medium active">1</div>
+                <div class="w-8 h-[2px] bg-[#E8E8E8]"></div>
+                <div id="indicator-2" class="step-indicator w-8 h-8 rounded-full border-2 border-[#E8E8E8] flex items-center justify-center text-sm font-medium text-[#666]">2</div>
+                <div class="w-8 h-[2px] bg-[#E8E8E8]"></div>
+                <div id="indicator-3" class="step-indicator w-8 h-8 rounded-full border-2 border-[#E8E8E8] flex items-center justify-center text-sm font-medium text-[#666]">3</div>
+            </div>
 
             <!-- Error Message -->
             <div th:if="${error}" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -61,115 +75,241 @@
             </div>
 
             <!-- Register Form -->
-            <form th:action="@{/register}" th:object="${registerRequest}" method="post">
-                <!-- Name Row -->
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <!-- First Name -->
-                    <div>
+            <form th:action="@{/register}" method="post" id="registerForm">
+
+                <!-- Step 1: Name -->
+                <div class="step active" id="step-1">
+                    <p class="text-sm text-[#666] mb-6">Let's start with your name</p>
+
+                    <div class="mb-4">
                         <input
                                 type="text"
-                                th:field="*{firstName}"
+                                name="firstName"
+                                id="firstName"
                                 placeholder="First Name"
                                 required
                                 class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
                         >
                     </div>
 
-                    <!-- Last Name -->
-                    <div>
+                    <div class="mb-6">
                         <input
                                 type="text"
-                                th:field="*{lastName}"
+                                name="lastName"
+                                id="lastName"
                                 placeholder="Last Name"
                                 required
                                 class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
                         >
                     </div>
+
+                    <div class="flex justify-end">
+                        <button
+                                type="button"
+                                onclick="nextStep(1)"
+                                class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-12 py-2.5 text-[15px] transition-colors"
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Username -->
-                <div class="mb-4">
-                    <input
-                            type="text"
-                            th:field="*{username}"
-                            placeholder="Username"
-                            required
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
-                    >
+                <!-- Step 2: Email & Phone -->
+                <div class="step" id="step-2">
+                    <p class="text-sm text-[#666] mb-6">Enter your contact details</p>
+
+                    <!-- Email with fixed domain -->
+                    <div class="mb-4">
+                        <label class="block text-xs text-[#666] mb-1">Email</label>
+                        <div class="flex items-center border-b border-[#666] focus-within:border-[#00593E] transition-colors">
+                            <input
+                                    type="text"
+                                    id="emailPrefix"
+                                    placeholder="your.email"
+                                    required
+                                    class="flex-1 px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 focus:outline-none placeholder:text-[#666]"
+                            >
+                            <span class="text-[15px] text-[#666] bg-[#F5F5F5] px-3 py-1 rounded">@ump.ac.ma</span>
+                        </div>
+                        <input type="hidden" name="email" id="email">
+                    </div>
+
+                    <!-- Phone with fixed prefix -->
+                    <div class="mb-6">
+                        <label class="block text-xs text-[#666] mb-1">Phone</label>
+                        <div class="flex items-center border-b border-[#666] focus-within:border-[#00593E] transition-colors">
+                            <span class="text-[15px] text-[#666] bg-[#F5F5F5] px-3 py-1 rounded mr-2">+212</span>
+                            <input
+                                    type="tel"
+                                    id="phoneNumber"
+                                    placeholder="6 XX XX XX XX"
+                                    pattern="[0-9]{9}"
+                                    class="flex-1 px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 focus:outline-none placeholder:text-[#666]"
+                            >
+                        </div>
+                        <input type="hidden" name="phone" id="phone">
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button
+                                type="button"
+                                onclick="prevStep(2)"
+                                class="text-[#00593E] hover:text-[#004D35] font-medium px-6 py-2.5 text-[15px] transition-colors"
+                        >
+                            <i class="fas fa-arrow-left mr-2"></i>Back
+                        </button>
+                        <button
+                                type="button"
+                                onclick="nextStep(2)"
+                                class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-12 py-2.5 text-[15px] transition-colors"
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Email -->
-                <div class="mb-4">
-                    <input
-                            type="email"
-                            th:field="*{email}"
-                            placeholder="Email Address"
-                            required
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
-                    >
-                </div>
+                <!-- Step 3: Password -->
+                <div class="step" id="step-3">
+                    <p class="text-sm text-[#666] mb-6">Create a secure password</p>
 
-                <!-- Phone -->
-                <div class="mb-4">
-                    <input
-                            type="tel"
-                            th:field="*{phone}"
-                            placeholder="Phone Number"
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
-                    >
-                </div>
+                    <div class="mb-4">
+                        <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder="Password"
+                                required
+                                minlength="8"
+                                class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
+                        >
+                    </div>
 
-                <!-- Role Selection -->
-                <div class="mb-4">
-                    <select
-                            th:field="*{roleId}"
-                            required
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none transition-colors"
-                    >
-                        <option value="" disabled selected class="text-[#666]">Select Role</option>
-                        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}">Role</option>
-                    </select>
-                </div>
+                    <div class="mb-6">
+                        <input
+                                type="password"
+                                name="confirmPassword"
+                                id="confirmPassword"
+                                placeholder="Confirm Password"
+                                required
+                                minlength="8"
+                                class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
+                        >
+                        <p id="passwordError" class="text-xs text-red-500 mt-1 hidden">Passwords do not match</p>
+                    </div>
 
-                <!-- Password -->
-                <div class="mb-4">
-                    <input
-                            type="password"
-                            th:field="*{password}"
-                            placeholder="Password"
-                            required
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
-                    >
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="mb-6">
-                    <input
-                            type="password"
-                            th:field="*{confirmPassword}"
-                            placeholder="Confirm Password"
-                            required
-                            class="w-full px-0 py-2 text-[15px] text-[#1A1A1A] bg-transparent border-0 border-b border-[#666] focus:border-[#00593E] focus:outline-none placeholder:text-[#666] transition-colors"
-                    >
-                </div>
-
-                <!-- Submit Button and Login Link -->
-                <div class="flex items-center justify-between">
-                    <a th:href="@{/login}" class="text-sm text-[#00593E] hover:text-[#004D35] transition-colors">
-                        Already have an account? Sign in
-                    </a>
-                    <button
-                            type="submit"
-                            class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-12 py-2.5 text-[15px] transition-colors"
-                    >
-                        Sign up
-                    </button>
+                    <div class="flex justify-between">
+                        <button
+                                type="button"
+                                onclick="prevStep(3)"
+                                class="text-[#00593E] hover:text-[#004D35] font-medium px-6 py-2.5 text-[15px] transition-colors"
+                        >
+                            <i class="fas fa-arrow-left mr-2"></i>Back
+                        </button>
+                        <button
+                                type="submit"
+                                class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-12 py-2.5 text-[15px] transition-colors"
+                        >
+                            Sign up
+                        </button>
+                    </div>
                 </div>
             </form>
-        </div>
 
+            <!-- Login Link -->
+            <div class="mt-6 text-center">
+                <a th:href="@{/login}" class="text-sm text-[#00593E] hover:text-[#004D35] transition-colors">
+                    Already have an account? Sign in
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    let currentStep = 1;
+
+    function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        // Show current step
+        document.getElementById('step-' + step).classList.add('active');
+
+        // Update indicators
+        for (let i = 1; i <= 3; i++) {
+            const indicator = document.getElementById('indicator-' + i);
+            indicator.classList.remove('completed', 'active');
+            indicator.classList.add('border-[#E8E8E8]', 'text-[#666]');
+
+            if (i < step) {
+                indicator.classList.add('completed');
+                indicator.classList.remove('border-[#E8E8E8]', 'text-[#666]');
+                indicator.innerHTML = '<i class="fas fa-check text-xs"></i>';
+            } else if (i === step) {
+                indicator.classList.add('active');
+                indicator.classList.remove('border-[#E8E8E8]', 'text-[#666]');
+                indicator.innerHTML = i;
+            } else {
+                indicator.innerHTML = i;
+            }
+        }
+    }
+
+    function nextStep(current) {
+        // Validate current step
+        if (current === 1) {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            if (!firstName || !lastName) {
+                alert('Please fill in both first name and last name');
+                return;
+            }
+        } else if (current === 2) {
+            const emailPrefix = document.getElementById('emailPrefix').value.trim();
+            if (!emailPrefix) {
+                alert('Please enter your email');
+                return;
+            }
+            // Set full email value
+            document.getElementById('email').value = emailPrefix + '@ump.ac.ma';
+            // Set full phone value
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            document.getElementById('phone').value = phoneNumber ? '+212' + phoneNumber : '';
+        }
+
+        currentStep = current + 1;
+        showStep(currentStep);
+    }
+
+    function prevStep(current) {
+        currentStep = current - 1;
+        showStep(currentStep);
+    }
+
+    // Form validation before submit
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            document.getElementById('passwordError').classList.remove('hidden');
+            return false;
+        }
+
+        // Ensure email is set
+        const emailPrefix = document.getElementById('emailPrefix').value.trim();
+        document.getElementById('email').value = emailPrefix + '@ump.ac.ma';
+
+        // Ensure phone is set
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        document.getElementById('phone').value = phoneNumber ? '+212' + phoneNumber : '';
+    });
+
+    // Hide password error on input
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+        document.getElementById('passwordError').classList.add('hidden');
+    });
+</script>
 
 </body>
 </html>
