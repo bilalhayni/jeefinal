@@ -17,6 +17,9 @@
     <link th:href="@{/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
     <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
@@ -64,10 +67,14 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content ml-[250px] min-h-screen" id="mainContent">
+<main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
     <!-- Top Header -->
-    <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-3 flex justify-between items-center sticky top-0 z-[100]">
-        <div class="flex items-center gap-4">
+    <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-4 flex justify-between items-center sticky top-0 z-[100] md:px-6">
+        <div class="flex items-center gap-3">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Dashboard</h1>
         </div>
 
@@ -124,7 +131,7 @@
     </header>
 
     <!-- Content Area -->
-    <div class="p-8">
+    <div class="p-4 md:p-6 lg:p-8">
         <!-- Welcome Section -->
         <div class="mb-8">
             <h2 class="text-2xl font-semibold text-[#1A1A1A] mb-2">Welcome back, <span th:text="${member.getFname()}">User</span>!</h2>
@@ -133,7 +140,7 @@
 
         <!-- Stats Section (Admin Only) -->
         <div th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-            <div class="grid grid-cols-4 gap-5 mb-8 max-[1400px]:grid-cols-2 max-[768px]:grid-cols-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-6 md:mb-8">
                 <div class="bg-white border border-[#E8E8E8] rounded-[10px] p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
                     <div class="flex justify-between items-start mb-3">
                         <span class="text-[13px] text-[#666] font-medium">Total Members</span>
@@ -191,7 +198,7 @@
         </div>
 
         <!-- Activity Cards -->
-        <div class="grid grid-cols-3 gap-5 max-[1200px]:grid-cols-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             <!-- Latest Publications -->
             <div class="bg-white border border-[#E8E8E8] rounded-[10px] overflow-hidden">
                 <div class="py-4 px-5 border-b border-[#E8E8E8] flex justify-between items-center bg-white">
