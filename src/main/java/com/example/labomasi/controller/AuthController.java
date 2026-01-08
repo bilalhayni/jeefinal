@@ -73,8 +73,8 @@ public class AuthController {
                 .build();
 
         try {
-            // Register with default role "ENSEIGNANT"
-            authService.register(member, "ENSEIGNANT");
+            // Register with default role "DOCTORANT"
+            authService.register(member, "DOCTORANT");
             redirectAttributes.addFlashAttribute("success", "Registration successful! You can now login.");
             return "redirect:/login";
         } catch (RuntimeException e) {
