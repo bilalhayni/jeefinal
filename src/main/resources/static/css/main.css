@@ -1088,8 +1088,9 @@ body {
 
 /* Sidebar Logo */
 .sidebar-logo {
-    max-height: 30px;
+    max-height: 54px;
     width: auto;
+    margin:auto;
 }
 
 /* Sidebar Toggle Icon Animation */
