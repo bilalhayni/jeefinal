@@ -1,12 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/layout :: head('MASI Labo - Publications')}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASI Labo - Publications</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{../../static/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#00593E',
+                            700: '#004D35',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar Fragment -->
-<th:block th:replace="~{fragments/layout :: sidebar('publications')}"></th:block>
+<!-- Sidebar -->
+<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
+    <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
+        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+    </div>
+
+    <nav class="p-3 flex-1 overflow-y-auto">
+        <div class="mb-6">
+            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3 whitespace-nowrap">Main Menu</div>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/}">
+                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Dashboard</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members & Roles</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+                <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Members</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/projects}">
+                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Projects</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/publications}">
+                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Publications</span>
+            </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Resources</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="p-3 border-t border-[#E8E8E8]">
+        <form method="post" th:action="@{/logout}" class="m-0">
+            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] no-underline rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
+                <span>Sign Out</span>
+            </button>
+        </form>
+    </div>
+</aside>
 
 <!-- Main Content -->
 <main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
@@ -22,12 +104,8 @@
 
         <div class="flex items-center gap-4">
             <!-- User Profile Dropdown -->
-            <div class="relative" id="profileDropdown">
-                <button type="button"
-                        class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]"
-                        aria-haspopup="menu"
-                        aria-expanded="false"
-                        onclick="toggleProfileMenu(event)">
+            <div class="dropdown">
+                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
                         <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                     </div>
@@ -35,45 +113,43 @@
                         <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${#authentication.name}">User Name</div>
                     </div>
                     <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1 hidden sm:block"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div id="profileMenu"
-                     class="hidden absolute right-0 mt-2 w-[220px] bg-white border border-[#E8E8E8] rounded-lg shadow-lg p-2 z-[200]">
-                    <div class="p-3 border-b border-[#E8E8E8] mb-2">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
-                                <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
-                            </div>
-                            <div class="flex-1">
-                                <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${#authentication.name}">User Name</div>
-                                <div class="text-xs text-[#666]" sec:authentication="principal.authorities">Role</div>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
+                    <li>
+                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
+                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${#authentication.name}">User Name</div>
+                                    <div class="text-xs text-[#666]" sec:authentication="principal.authorities">Role</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <a th:href="@{/profile}"
-                       class="block py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
-                        <i class="fas fa-user w-4 text-sm"></i>
-                        My Profile
-                    </a>
-
-                    <a th:href="@{/changepassword}"
-                       class="block py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
-                        <i class="fas fa-key w-4 text-sm"></i>
-                        Change Password
-                    </a>
-
-                    <div class="my-2 border-t border-[#E8E8E8]"></div>
-
-                    <form th:action="@{/logout}" method="post" class="m-0">
-                        <button type="submit"
-                                class="w-full text-left py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 hover:bg-[#FEF2F2] hover:text-[#DC2626]">
-                            <i class="fas fa-sign-out-alt w-4 text-sm"></i>
-                            Sign Out
-                        </button>
-                    </form>
-                </div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
+                            <i class="fas fa-user w-4 text-sm"></i>
+                            My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/changepassword}">
+                            <i class="fas fa-key w-4 text-sm"></i>
+                            Change Password
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                                <i class="fas fa-sign-out-alt w-4 text-sm"></i>
+                                Sign Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
@@ -324,7 +400,8 @@
     </div>
 </main>
 
-<!-- Scripts Fragment -->
-<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<!-- Scripts -->
+
+<script th:src="@{../../static/js/main.js}" src="../../static/js/main.js"></script>
 </body>
 </html>
