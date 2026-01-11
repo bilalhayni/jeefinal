@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Your CSS -->
-    <link rel="stylesheet" th:href="@{/static/css/main.css}" href="/static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 
 <body class="min-h-screen bg-[#E8ECF0] relative overflow-hidden font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif]">
@@ -42,7 +42,7 @@
         <div class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.2)] p-11">
             <!-- Logo -->
             <div class="flex items-center gap-3 mb-6">
-                <img th:src="@{/static/images/logo.svg}" src="/static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+                <img th:th:src="@{/images/logo.svg}" src="/static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
             </div>
 
             <!-- Title -->

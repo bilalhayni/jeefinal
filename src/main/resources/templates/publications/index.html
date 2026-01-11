@@ -13,32 +13,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link th:href="@{../../static/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#00593E',
-                            700: '#004D35',
-                            800: '#166534',
-                            900: '#14532d',
-                        }
-                    },
-                    fontFamily: {
-                        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
 <!-- Mobile Overlay -->
@@ -47,7 +22,7 @@
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
     <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+        <img th:src="@{/images/logo.svg}" th:src="@{/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
 
     <nav class="p-3 flex-1 overflow-y-auto">
@@ -402,6 +377,6 @@
 
 <!-- Scripts -->
 
-<script th:src="@{../../static/js/main.js}" src="../../static/js/main.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
