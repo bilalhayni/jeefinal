@@ -81,3 +81,35 @@ function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
 }
+function toggleProfileMenu(e) {
+    e.stopPropagation();
+    const menu = document.getElementById("profileMenu");
+    const btn = e.currentTarget;
+    const isOpen = !menu.classList.contains("hidden");
+
+    // Close any open menu first
+    closeProfileMenu();
+
+    if (!isOpen) {
+        menu.classList.remove("hidden");
+        btn.setAttribute("aria-expanded", "true");
+    }
+}
+
+function closeProfileMenu() {
+    const menu = document.getElementById("profileMenu");
+    const dropdown = document.getElementById("profileDropdown");
+    if (!menu || !dropdown) return;
+
+    menu.classList.add("hidden");
+    const btn = dropdown.querySelector("button[aria-expanded]");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+}
+
+// Close on click outside
+document.addEventListener("click", closeProfileMenu);
+
+// Close on ESC
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeProfileMenu();
+});

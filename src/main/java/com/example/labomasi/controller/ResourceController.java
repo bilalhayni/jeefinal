@@ -19,7 +19,7 @@ public class ResourceController {
     @GetMapping("")
     public String listResources(Model model,
                                 @RequestParam(name = "page", defaultValue = "0") int page,
-                                @RequestParam(name = "size", defaultValue = "6") int size,
+                                @RequestParam(name = "size", defaultValue = "5") int size,
                                 @RequestParam(name = "keyword", defaultValue = "") String keyword) {
 
         Page<Resource> resourcePage = resourceService.searchByName(keyword, PageRequest.of(page, size));

@@ -30,7 +30,7 @@ public class MemberController {
     @GetMapping
     public String listMembers(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int page,
-                              @RequestParam(name = "size", defaultValue = "6") int size,
+                              @RequestParam(name = "size", defaultValue = "5") int size,
                               @RequestParam(name = "keyword", defaultValue = "") String keyword) {
 
         Page<Member> memberPage = memberService.searchByLastName(keyword, PageRequest.of(page, size));

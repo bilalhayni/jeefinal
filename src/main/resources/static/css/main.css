@@ -11,6 +11,13 @@ body {
     font-size: 14px;
 }
 
+/* Moroccan Pattern */
+.moroccan-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.15'/%3E%3Cpath d='M30 10L50 30L30 50L10 30L30 10z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+}
+
+
+
 /* Sidebar */
 .sidebar {
     width: 250px;
@@ -1217,3 +1224,12 @@ body {
     background-color: #FEF2F2;
     color: #DC2626;
 }
+
+
+/* Multi-step helpers */
+.step { display: none; }
+.step.active { display: block; }
+
+.step-indicator { transition: all 0.3s ease; }
+.step-indicator.completed { background-color: #00593E; color: #fff; }
+.step-indicator.active { border-color: #00593E; color: #00593E; }

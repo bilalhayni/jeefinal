@@ -7,14 +7,12 @@
     <title>MASI Labo - Dashboard</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link th:href="@{../static/css/main.css}" href="../static/css/main.css" rel="stylesheet">
+    <link th:href="@{/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
 <!-- Mobile Overlay -->
@@ -23,7 +21,7 @@
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
     <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+        <img th:src="@{/images/logo.svg}" src="/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
 
     <nav class="p-3 flex-1 overflow-y-auto">
@@ -80,53 +78,63 @@
 
         <div class="flex items-center gap-4">
             <!-- User Profile Dropdown -->
-            <div class="dropdown">
-                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- User Profile Dropdown (Tailwind-only) -->
+            <div class="relative" id="profileDropdown">
+                <button type="button"
+                        class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]"
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                        onclick="toggleProfileMenu(event)">
                     <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
                         <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
                     </div>
                     <div class="text-left">
-                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${member.getFname()}">User Name</div>
+                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight"
+                             th:text="${member.getFname()}">User Name</div>
                     </div>
                     <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1"></i>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
-                    <li>
-                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
-                                    <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
-                                    <div class="text-xs text-[#666]" th:text="${member.getEmail()}">email@example.com</div>
-                                </div>
+                </button>
+
+                <!-- Menu -->
+                <div id="profileMenu"
+                     class="hidden absolute right-0 mt-2 w-[220px] bg-white border border-[#E8E8E8] rounded-lg shadow-lg p-2 z-[200]">
+                    <div class="p-3 border-b border-[#E8E8E8] mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
+                                <span th:text="${#strings.substring(member.getFname(), 0, 1)}">A</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-sm text-[#1A1A1A]"
+                                     th:text="${member.getFname()} + ' ' + ${member.getLname()}">User Name</div>
+                                <div class="text-xs text-[#666]" th:text="${member.getEmail()}">email@example.com</div>
                             </div>
                         </div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
-                            <i class="fas fa-user w-4 text-sm"></i>
-                            My Profile
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/changepassword}">
-                            <i class="fas fa-key w-4 text-sm"></i>
-                            Change Password
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
-                    <li>
-                        <form th:action="@{/logout}" method="post" class="m-0">
-                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
-                                <i class="fas fa-sign-out-alt w-4 text-sm"></i>
-                                Sign Out
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+                    </div>
+
+                    <a th:href="@{/profile}"
+                       class="block py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
+                        <i class="fas fa-user w-4 text-sm"></i>
+                        My Profile
+                    </a>
+
+                    <a th:href="@{/changepassword}"
+                       class="block py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]">
+                        <i class="fas fa-key w-4 text-sm"></i>
+                        Change Password
+                    </a>
+
+                    <div class="my-2 border-t border-[#E8E8E8]"></div>
+
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit"
+                                class="w-full text-left py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 hover:bg-[#FEF2F2] hover:text-[#DC2626]">
+                            <i class="fas fa-sign-out-alt w-4 text-sm"></i>
+                            Sign Out
+                        </button>
+                    </form>
+                </div>
             </div>
+
         </div>
     </header>
 

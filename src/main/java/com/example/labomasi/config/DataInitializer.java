@@ -57,21 +57,20 @@ public class DataInitializer {
 
             Member admin = Member.builder()
                     .fname("Admin")
-                    .lname("SYSTEM")
+                    .lname("A.")
                     .username(adminUsername)
-                    .email("admin@labomasi.com")
+                    .email("admin@masi.fpn.ma")
                     .password(passwordEncoder.encode("admin123"))
-                    .phone("")
+                    .phone("+212600000001")
                     .createdAt(LocalDate.now())
                     .role(adminRole)
                     .build();
 
-            //admin.getRoles().add(adminRole);
             memberRepository.save(admin);
 
             log.info("=================================");
             log.info("Admin user created!");
-            log.info("Username: admin");
+            log.info("Email: admin@masi.fpn.ma");
             log.info("Password: admin123");
             log.info("=================================");
         }
