@@ -9,7 +9,7 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link th:href="@{../../static/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
 <!-- Mobile Overlay -->
@@ -18,7 +18,7 @@
 <!-- Sidebar -->
 <aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
     <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{../../static/images/logo.svg}" src="../../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+        <img th:src="@{/images/logo.svg}" alt="Lab Logo" class="sidebar-logo">
     </div>
     <nav class="p-3 flex-1 overflow-y-auto">
         <div class="mb-6">
@@ -133,6 +133,6 @@
 </main>
 
 
-<script th:src="@{/js/main.js}" src="../static/js/main.js"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
