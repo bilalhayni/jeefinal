@@ -1,7 +1,9 @@
 package com.example.labomasi.config;
 
+import com.example.labomasi.model.entity.Department;
 import com.example.labomasi.model.entity.Member;
 import com.example.labomasi.model.entity.Role;
+import com.example.labomasi.repository.DepartmentRepository;
 import com.example.labomasi.repository.MemberRepository;
 import com.example.labomasi.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class DataInitializer {
 
     private final RoleRepository roleRepository;
     private final MemberRepository memberRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -30,6 +33,11 @@ public class DataInitializer {
             createRoleIfNotExist("DIRECTEUR");
             createRoleIfNotExist("ENSEIGNANT");
             createRoleIfNotExist("DOCTORANT");
+
+            // Create departments if not exist
+            createDepartmentIfNotExist("Informatique", "Department of Computer Science");
+            createDepartmentIfNotExist("Mathematiques", "Department of Mathematics");
+            createDepartmentIfNotExist("Physique", "Department of Physics");
 
             // Create admin user if not exist
             createAdminIfNotExist();
@@ -45,6 +53,17 @@ public class DataInitializer {
                     .build();
             roleRepository.save(role);
             log.info("Role created: {}", roleName);
+        }
+    }
+
+    private void createDepartmentIfNotExist(String name, String description) {
+        if (!departmentRepository.existsByName(name)) {
+            Department department = Department.builder()
+                    .name(name)
+                    .description(description)
+                    .build();
+            departmentRepository.save(department);
+            log.info("Department created: {}", name);
         }
     }
 

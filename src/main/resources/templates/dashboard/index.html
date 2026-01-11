@@ -39,6 +39,10 @@
                 <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Members</span>
             </a>
+            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/departments}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-building w-[18px] text-[15px] shrink-0"></i>
+                <span class="whitespace-nowrap">Departments</span>
+            </a>
             <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/projects}">
                 <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
                 <span class="whitespace-nowrap">Projects</span>

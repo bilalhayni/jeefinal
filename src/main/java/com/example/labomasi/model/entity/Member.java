@@ -43,4 +43,9 @@ public class Member {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    // Many Members -> One Department (optional, admin users don't have a department)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "department_id", nullable = true)
+    private Department department;
 }

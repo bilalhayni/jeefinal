@@ -4,6 +4,7 @@ import com.example.labomasi.exception.BadRequestException;
 import com.example.labomasi.model.dto.form.MemberCreateForm;
 import com.example.labomasi.model.dto.form.MemberEditForm;
 import com.example.labomasi.model.entity.Member;
+import com.example.labomasi.service.DepartmentService;
 import com.example.labomasi.service.MemberService;
 import com.example.labomasi.service.RoleService;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final RoleService roleService;
+    private final DepartmentService departmentService;
 
     /**
      * GET /members - List all members with pagination and search
@@ -50,6 +52,7 @@ public class MemberController {
     public String showCreateForm(Model model) {
         model.addAttribute("memberForm", new MemberCreateForm());
         model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("departments", departmentService.findAll());
         return "members/create";
     }
 
@@ -64,6 +67,7 @@ public class MemberController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("departments", departmentService.findAll());
             return "members/create";
         }
 
@@ -74,6 +78,7 @@ public class MemberController {
         } catch (BadRequestException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("departments", departmentService.findAll());
             return "members/create";
         }
     }
@@ -101,11 +106,13 @@ public class MemberController {
                 .email(member.getEmail())
                 .phone(member.getPhone())
                 .roleId(member.getRole() != null ? member.getRole().getId() : null)
+                .departmentId(member.getDepartment() != null ? member.getDepartment().getId() : null)
                 .build();
 
         model.addAttribute("member", member);
         model.addAttribute("memberForm", form);
         model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("departments", departmentService.findAll());
         return "members/edit";
     }
 
@@ -122,6 +129,8 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             Member member = memberService.getByUsername(username);
             model.addAttribute("member", member);
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("departments", departmentService.findAll());
             return "members/edit";
         }
 
@@ -133,6 +142,8 @@ public class MemberController {
             Member member = memberService.getByUsername(username);
             model.addAttribute("member", member);
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("departments", departmentService.findAll());
             return "members/edit";
         }
     }
