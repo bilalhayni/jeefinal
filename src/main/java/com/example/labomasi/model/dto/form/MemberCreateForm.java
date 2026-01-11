@@ -42,4 +42,7 @@ public class MemberCreateForm {
 
     @NotNull(message = "Role is required")
     private Long roleId;
+
+    // Optional - admin users don't need a department
+    private Long departmentId;
 }

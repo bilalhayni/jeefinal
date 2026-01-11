@@ -4,8 +4,10 @@ import com.example.labomasi.exception.BadRequestException;
 import com.example.labomasi.exception.ResourceNotFoundException;
 import com.example.labomasi.model.dto.form.MemberCreateForm;
 import com.example.labomasi.model.dto.form.MemberEditForm;
+import com.example.labomasi.model.entity.Department;
 import com.example.labomasi.model.entity.Member;
 import com.example.labomasi.model.entity.Role;
+import com.example.labomasi.repository.DepartmentRepository;
 import com.example.labomasi.repository.MemberRepository;
 import com.example.labomasi.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<Member> findAll() {
@@ -81,6 +84,13 @@ public class MemberService {
         Role role = roleRepository.findById(form.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role", form.getRoleId()));
 
+        // Find the department if provided (optional for admin users)
+        Department department = null;
+        if (form.getDepartmentId() != null) {
+            department = departmentRepository.findById(form.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Department", form.getDepartmentId()));
+        }
+
         // Build the member entity
         Member member = Member.builder()
                 .fname(form.getFirstName())
@@ -91,6 +101,7 @@ public class MemberService {
                 .phone(form.getPhone())
                 .createdAt(LocalDate.now())
                 .role(role)
+                .department(department)
                 .build();
 
         return memberRepository.save(member);
@@ -123,6 +134,15 @@ public class MemberService {
             Role role = roleRepository.findById(form.getRoleId())
                     .orElseThrow(() -> new ResourceNotFoundException("Role", form.getRoleId()));
             member.setRole(role);
+        }
+
+        // Update department (can be null for admin users)
+        if (form.getDepartmentId() != null) {
+            Department department = departmentRepository.findById(form.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Department", form.getDepartmentId()));
+            member.setDepartment(department);
+        } else {
+            member.setDepartment(null);
         }
 
         return memberRepository.save(member);

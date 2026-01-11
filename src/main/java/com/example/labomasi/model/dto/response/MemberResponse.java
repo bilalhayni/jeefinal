@@ -24,6 +24,7 @@ public class MemberResponse {
     private String phone;
     private LocalDate createdAt;
     private String role;
+    private String department;
 
     public static MemberResponse fromEntity(Member member) {
         return MemberResponse.builder()
@@ -35,6 +36,7 @@ public class MemberResponse {
                 .phone(member.getPhone())
                 .createdAt(member.getCreatedAt())
                 .role(member.getRole().getRolename())
+                .department(member.getDepartment() != null ? member.getDepartment().getName() : null)
                 .build();
     }
 }

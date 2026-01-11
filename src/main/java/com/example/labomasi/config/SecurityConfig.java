@@ -64,6 +64,9 @@ public class SecurityConfig {
                         // Role management - ADMINISTRATEUR only
                         .requestMatchers("/roles/**").hasRole("ADMINISTRATEUR")
 
+                        // Department management - ADMINISTRATEUR only
+                        .requestMatchers("/departments/**").hasRole("ADMINISTRATEUR")
+
                         // Project management
                         .requestMatchers("/projects", "/projects/in-progress").authenticated()
                         .requestMatchers("/projects/add", "/projects/update/**", "/projects/delete/**").hasRole("ADMINISTRATEUR")
