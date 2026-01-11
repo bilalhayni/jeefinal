@@ -1,65 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASI Labo - Add Member</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link th:href="@{../../static/css/main.css}" href="../../static/css/main.css" rel="stylesheet">
+<head th:replace="~{fragments/layout :: head('MASI Labo - Add Member')}">
 </head>
 <body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
-<!-- Mobile Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- Sidebar -->
-<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
-    <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{../static/images/logo.svg}" src="../static/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
-    </div>
-    <nav class="p-3 flex-1 overflow-y-auto">
-        <div class="mb-6">
-            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3">Main Menu</div>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/}">
-                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
-                <span>Dashboard</span>
-            </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/members}">
-                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
-                <span>Members & Roles</span>
-            </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/projects}">
-                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
-                <span>Projects</span>
-            </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/publications}">
-                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
-                <span>Publications</span>
-            </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/resources}">
-                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
-                <span>Resources</span>
-            </a>
-        </div>
-    </nav>
-    <div class="p-3 border-t border-[#E8E8E8]">
-        <form method="post" th:action="@{/logout}" class="m-0">
-            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2]">
-                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
-                <span>Sign Out</span>
-            </button>
-        </form>
-    </div>
-</aside>
+<th:block th:replace="~{fragments/layout :: sidebar('members')}"></th:block>
 
 <!-- Main Content -->
 <main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
     <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-4 flex justify-between items-center sticky top-0 z-[100] md:px-6">
         <div class="flex items-center gap-3">
-            <!-- Mobile Menu Button -->
             <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
@@ -177,7 +128,7 @@
     </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script th:src="@{/js/main.js}" src="../static/js/main.js"></script>
+<!-- Scripts -->
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
 </body>
 </html>
