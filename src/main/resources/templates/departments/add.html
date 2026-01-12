@@ -93,11 +93,21 @@
 
                 <div class="p-6">
                     <form th:action="@{/departments/add}" method="post" class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Name</label>
-                            <input type="text" name="name" required
-                                   class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]"
-                                   placeholder="Enter department name">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Name <span class="text-red-500">*</span></label>
+                                <input type="text" name="name" required
+                                       class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]"
+                                       placeholder="e.g., Computer Science">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Code <span class="text-red-500">*</span></label>
+                                <input type="text" name="code" required maxlength="20"
+                                       class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E] uppercase"
+                                       placeholder="e.g., CS"
+                                       style="text-transform: uppercase;">
+                                <p class="text-xs text-gray-500 mt-1">Unique department code (max 20 characters)</p>
+                            </div>
                         </div>
 
                         <div>

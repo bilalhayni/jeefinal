@@ -28,16 +28,34 @@ public class DepartmentController {
 
     @PostMapping("/add")
     public String addDepartment(@RequestParam("name") String name,
+                                @RequestParam("code") String code,
                                 @RequestParam(value = "description", required = false) String description,
                                 Model model) {
+        // Validate code is not empty
+        if (code == null || code.trim().isEmpty()) {
+            model.addAttribute("error", "Department code is required!");
+            model.addAttribute("department", new Department());
+            return "departments/add";
+        }
+
+        // Normalize code to uppercase
+        String normalizedCode = code.trim().toUpperCase();
+
         if (departmentService.existsByName(name)) {
-            model.addAttribute("error", "Department already exists!");
+            model.addAttribute("error", "Department name already exists!");
+            model.addAttribute("department", new Department());
+            return "departments/add";
+        }
+
+        if (departmentService.existsByCode(normalizedCode)) {
+            model.addAttribute("error", "Department code already exists!");
             model.addAttribute("department", new Department());
             return "departments/add";
         }
 
         Department department = Department.builder()
                 .name(name)
+                .code(normalizedCode)
                 .description(description)
                 .build();
 
@@ -56,10 +74,21 @@ public class DepartmentController {
     @PostMapping("/edit/{id}")
     public String editDepartment(@PathVariable Long id,
                                  @RequestParam("name") String name,
+                                 @RequestParam("code") String code,
                                  @RequestParam(value = "description", required = false) String description,
                                  Model model) {
         Department department = departmentService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        // Validate code is not empty
+        if (code == null || code.trim().isEmpty()) {
+            model.addAttribute("error", "Department code is required!");
+            model.addAttribute("department", department);
+            return "departments/edit";
+        }
+
+        // Normalize code to uppercase
+        String normalizedCode = code.trim().toUpperCase();
 
         // Check if name already exists for another department
         if (!department.getName().equals(name) && departmentService.existsByName(name)) {
@@ -68,7 +97,15 @@ public class DepartmentController {
             return "departments/edit";
         }
 
+        // Check if code already exists for another department
+        if (!department.getCode().equals(normalizedCode) && departmentService.existsByCode(normalizedCode)) {
+            model.addAttribute("error", "Department code already exists!");
+            model.addAttribute("department", department);
+            return "departments/edit";
+        }
+
         department.setName(name);
+        department.setCode(normalizedCode);
         department.setDescription(description);
         departmentService.save(department);
         return "redirect:/departments";

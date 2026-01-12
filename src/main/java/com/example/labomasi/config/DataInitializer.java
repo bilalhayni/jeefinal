@@ -34,10 +34,10 @@ public class DataInitializer {
             createRoleIfNotExist("ENSEIGNANT");
             createRoleIfNotExist("DOCTORANT");
 
-            // Create departments if not exist
-            createDepartmentIfNotExist("Informatique", "Department of Computer Science");
-            createDepartmentIfNotExist("Mathematiques", "Department of Mathematics");
-            createDepartmentIfNotExist("Physique", "Department of Physics");
+            // Create departments if not exist (name, code, description)
+            createDepartmentIfNotExist("Informatique", "CS", "Department of Computer Science");
+            createDepartmentIfNotExist("Mathematiques", "MATH", "Department of Mathematics");
+            createDepartmentIfNotExist("Physique", "PHY", "Department of Physics");
 
             // Create admin user if not exist
             createAdminIfNotExist();
@@ -56,14 +56,15 @@ public class DataInitializer {
         }
     }
 
-    private void createDepartmentIfNotExist(String name, String description) {
-        if (!departmentRepository.existsByName(name)) {
+    private void createDepartmentIfNotExist(String name, String code, String description) {
+        if (!departmentRepository.existsByName(name) && !departmentRepository.existsByCode(code)) {
             Department department = Department.builder()
                     .name(name)
+                    .code(code)
                     .description(description)
                     .build();
             departmentRepository.save(department);
-            log.info("Department created: {}", name);
+            log.info("Department created: {} ({})", name, code);
         }
     }
 

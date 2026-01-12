@@ -160,7 +160,7 @@
                 <table class="w-full">
                     <thead>
                     <tr class="bg-gray-50 border-b border-gray-100">
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Code</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Members</th>
@@ -170,10 +170,10 @@
                     <tbody class="divide-y divide-gray-100">
                     <tr th:each="department : ${departments}"
                         class="hover:bg-gray-50 transition-colors duration-150">
-                        <!-- ID -->
+                        <!-- Code -->
                         <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-gray-600 text-xs font-mono">
-                                #<span th:text="${department.id}">1</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-indigo-100 text-indigo-700 text-xs font-mono font-semibold">
+                                <span th:text="${department.code}">CS</span>
                             </span>
                         </td>
 
