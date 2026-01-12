@@ -40,6 +40,14 @@ public class DepartmentService {
         return departmentRepository.existsByName(name);
     }
 
+    public Optional<Department> findByCode(String code) {
+        return departmentRepository.findByCode(code);
+    }
+
+    public boolean existsByCode(String code) {
+        return departmentRepository.existsByCode(code);
+    }
+
     public long count() {
         return departmentRepository.count();
     }

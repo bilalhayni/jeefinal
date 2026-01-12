@@ -3,6 +3,7 @@ package com.example.labomasi.controller;
 import com.example.labomasi.exception.BadRequestException;
 import com.example.labomasi.model.dto.form.MemberCreateForm;
 import com.example.labomasi.model.dto.form.MemberEditForm;
+import com.example.labomasi.model.entity.Department;
 import com.example.labomasi.model.entity.Member;
 import com.example.labomasi.service.DepartmentService;
 import com.example.labomasi.service.MemberService;
@@ -11,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,14 +31,42 @@ public class MemberController {
 
     /**
      * GET /members - List all members with pagination and search
+     * DIRECTEUR can only see members from their own department
      */
     @GetMapping
     public String listMembers(Model model,
                               @RequestParam(name = "page", defaultValue = "0") int page,
                               @RequestParam(name = "size", defaultValue = "5") int size,
-                              @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+                              @RequestParam(name = "keyword", defaultValue = "") String keyword,
+                              Authentication authentication) {
 
-        Page<Member> memberPage = memberService.searchByLastName(keyword, PageRequest.of(page, size));
+        Page<Member> memberPage;
+
+        // Check if user is DIRECTEUR - filter by their department
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DIRECTEUR"))) {
+            // Get the current user's member record
+            String email = authentication.getName();
+            Member currentUser = memberService.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Current user not found"));
+
+            Department userDepartment = currentUser.getDepartment();
+
+            if (userDepartment == null) {
+                // DIRECTEUR without department sees no members
+                memberPage = Page.empty();
+            } else if (keyword != null && !keyword.isEmpty()) {
+                // Search within department
+                memberPage = memberService.searchByDepartmentAndLastName(userDepartment, keyword, PageRequest.of(page, size));
+            } else {
+                // Get all members from department
+                memberPage = memberService.searchByDepartment(userDepartment, PageRequest.of(page, size));
+            }
+
+            model.addAttribute("userDepartment", userDepartment);
+        } else {
+            // ADMINISTRATEUR sees all members
+            memberPage = memberService.searchByLastName(keyword, PageRequest.of(page, size));
+        }
 
         model.addAttribute("members", memberPage.getContent());
         model.addAttribute("pages", new int[memberPage.getTotalPages()]);

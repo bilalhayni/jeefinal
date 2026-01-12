@@ -1,5 +1,6 @@
 package com.example.labomasi.repository;
 
+import com.example.labomasi.model.entity.Department;
 import com.example.labomasi.model.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //@Query("SELECT r.rolename, COUNT(m) FROM Member m JOIN m.roles r GROUP BY r.rolename")
     @Query("SELECT r.rolename, COUNT(m) FROM Member m JOIN m.role r GROUP BY r.rolename")
     List<Object[]> countMembersByRole();
+
+    // Methods for filtering by department
+    Page<Member> findByDepartment(Department department, Pageable pageable);
+
+    Page<Member> findByDepartmentAndLnameContainingIgnoreCase(Department department, String lname, Pageable pageable);
+
+    List<Member> findByDepartment(Department department);
 }

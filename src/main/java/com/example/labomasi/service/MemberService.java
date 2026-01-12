@@ -61,6 +61,27 @@ public class MemberService {
     }
 
     /**
+     * Search members by department (for DIRECTEUR role).
+     */
+    public Page<Member> searchByDepartment(Department department, Pageable pageable) {
+        return memberRepository.findByDepartment(department, pageable);
+    }
+
+    /**
+     * Search members by department and last name (for DIRECTEUR role).
+     */
+    public Page<Member> searchByDepartmentAndLastName(Department department, String keyword, Pageable pageable) {
+        return memberRepository.findByDepartmentAndLnameContainingIgnoreCase(department, keyword, pageable);
+    }
+
+    /**
+     * Find all members by department.
+     */
+    public List<Member> findByDepartment(Department department) {
+        return memberRepository.findByDepartment(department);
+    }
+
+    /**
      * Creates a new member from the form data.
      * Business logic: validates uniqueness, encodes password, sets uppercase lastname, assigns role.
      */

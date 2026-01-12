@@ -22,6 +22,9 @@ public class Department {
     @Column(name = "department_name", nullable = false, unique = true, length = 100)
     private String name;
 
+    @Column(name = "department_code", nullable = false, unique = true, length = 20)
+    private String code;
+
     @Column(length = 255)
     private String description;
 
