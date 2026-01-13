@@ -5,48 +5,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MASI Labo - Add Publication</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body class="m-0 p-0 box-border bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<body>
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Sidebar -->
-<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
-    <div class="sidebar-header p-3 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{/images/logo.svg}" th:src="@{/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <img th:src="@{/images/logo.svg}" src="/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
-    <nav class="p-3 flex-1 overflow-y-auto">
-        <div class="mb-6">
-            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3">Main Menu</div>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/}">
-                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main Menu</div>
+
+            <a class="nav-item" th:href="@{/}">
+                <i class="fas fa-th-large"></i>
                 <span>Dashboard</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
-                <span>Members & Roles</span>
+
+            <a class="nav-item" th:href="@{/members}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog"></i>
+                <span>Members &amp; Roles</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/projects}">
-                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
+
+            <a class="nav-item" th:href="@{/departments}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-building"></i>
+                <span>Departments</span>
+            </a>
+
+            <a class="nav-item" th:href="@{/projects}">
+                <i class="fas fa-folder-open"></i>
                 <span>Projects</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/publications}">
-                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
+
+            <a class="nav-item active" th:href="@{/publications}">
+                <i class="fas fa-file-alt"></i>
                 <span>Publications</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
+
+            <a class="nav-item" th:href="@{/resources}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box"></i>
                 <span>Resources</span>
             </a>
         </div>
     </nav>
-    <div class="p-3 border-t border-[#E8E8E8]">
-        <form method="post" th:action="@{/logout}" class="m-0">
-            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2]">
-                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
+
+    <div class="sidebar-footer">
+        <form method="post" th:action="@{/logout}">
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
                 <span>Sign Out</span>
             </button>
         </form>
@@ -54,70 +75,68 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content ml-[250px] min-h-screen" id="mainContent">
-    <header class="bg-white border-b border-[#E8E8E8] py-4 px-8 flex justify-between items-center sticky top-0 z-[100]">
-        <div class="flex items-center gap-4">
-            <a th:href="@{/publications}" class="w-9 h-9 rounded-md border border-[#E8E8E8] bg-white flex items-center justify-center text-[#666] hover:bg-[#F5F5F5]">
+<main class="main-content" id="mainContent">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a th:href="@{/publications}" class="btn btn-back">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">Add New Publication</h1>
+            <h1 class="page-title">Add New Publication</h1>
         </div>
     </header>
 
-    <div class="p-8">
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-white rounded-xl border border-[#E8E8E8] overflow-hidden shadow-sm">
-                <div class="px-6 py-4 border-b border-[#E8E8E8]">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-[rgba(0,89,62,0.08)] flex items-center justify-center">
-                            <i class="fas fa-file-alt text-[#00593E]"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-[#1A1A1A]">Publication Details</h3>
-                            <p class="text-xs text-[#999]">Fill in the details for the new publication</p>
-                        </div>
+    <!-- Content Area -->
+    <div class="content-area">
+        <div class="form-container">
+            <div class="form-card">
+                <div class="form-card-header">
+                    <div class="icon-box icon-box-md icon-box-primary icon-box-rounded">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div>
+                        <h3>Publication Details</h3>
+                        <p>Fill in the details for the new publication</p>
                     </div>
                 </div>
 
-                <div class="p-6">
-                    <form th:action="@{/publications/add}" th:object="${publication}" method="post" class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Title</label>
-                            <input type="text" th:field="*{title}" required
-                                   class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]"
+                <div class="form-card-body">
+                    <form th:action="@{/publications/add}" th:object="${publication}" method="post">
+                        <div class="form-group">
+                            <label class="form-label">Title</label>
+                            <input type="text" th:field="*{title}" required class="form-input"
                                    placeholder="Enter publication title">
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Author</label>
-                            <input type="text" th:field="*{author}" required
-                                   class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]"
+                        <div class="form-group">
+                            <label class="form-label">Author</label>
+                            <input type="text" th:field="*{author}" required class="form-input"
                                    placeholder="Enter author name">
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Publication Date</label>
-                            <input type="date" th:field="*{publicationDate}" required
-                                   class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]">
+                        <div class="form-group">
+                            <label class="form-label">Publication Date</label>
+                            <input type="date" th:field="*{publicationDate}" required class="form-input">
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-[#1A1A1A] mb-1.5">Related Project (Optional)</label>
-                            <select name="project_id"
-                                    class="w-full px-3 py-2.5 border border-[#E8E8E8] rounded-lg text-sm focus:ring-2 focus:ring-[#00593E]/20 focus:border-[#00593E]">
+                        <div class="form-group">
+                            <label class="form-label">Related Project (Optional)</label>
+                            <select name="project_id" class="form-input">
                                 <option value="">No project</option>
                                 <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.title}">Project</option>
                             </select>
                         </div>
 
-                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-[#E8E8E8]">
-                            <a th:href="@{/publications}"
-                               class="px-4 py-2.5 border border-[#E8E8E8] text-[#666] font-medium rounded-lg hover:bg-[#F5F5F5] transition-colors">
+                        <div class="form-actions">
+                            <a th:href="@{/publications}" class="btn btn-secondary">
                                 Cancel
                             </a>
-                            <button type="submit"
-                                    class="px-4 py-2.5 bg-[#00593E] hover:bg-[#004D35] text-white font-medium rounded-lg transition-colors">
-                                <i class="fas fa-plus mr-2"></i>Add Publication
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add Publication
                             </button>
                         </div>
                     </form>
@@ -127,7 +146,8 @@
     </div>
 </main>
 
-
+<!-- Scripts -->
 <script th:src="@{/js/main.js}"></script>
+
 </body>
 </html>
