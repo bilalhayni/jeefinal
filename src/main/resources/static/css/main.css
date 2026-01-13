@@ -1,19 +1,12 @@
 /* =====================================================
-   MASI LABO - CUSTOM CSS (Tailwind-Free)
-   =====================================================
-   A comprehensive CSS framework replacing all Tailwind
-   utility classes with custom semantic classes.
-   ===================================================== */
-
-/* =====================================================
    CSS VARIABLES - All colors defined here
    ===================================================== */
 :root {
     /* Primary Colors (Green) */
-    --primary: #00593E;
-    --primary-dark: #004D35;
-    --primary-light: rgba(0, 89, 62, 0.08);
-    --primary-ring: rgba(0, 89, 62, 0.2);
+    --primary: #a65b43;
+    --primary-dark: #8a4c38;
+    --primary-light: rgba(166, 91, 67, 0.08);
+    --primary-ring: rgba(166, 91, 67, 0.20);
 
     /* Background Colors */
     --bg-body: #FAFAFA;

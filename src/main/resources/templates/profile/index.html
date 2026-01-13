@@ -304,38 +304,6 @@
                                 </label>
                                 <input type="tel" th:field="*{phone}" class="form-input" placeholder="Enter phone number">
                             </div>
-
-                            <!-- Divider -->
-                            <div class="form-divider"></div>
-
-                            <!-- Password Section -->
-                            <div class="form-section">
-                                <h4 class="form-section-title">
-                                    <i class="fas fa-key"></i>
-                                    Change Password
-                                </h4>
-                                <p class="form-section-hint">Leave blank if you don't want to change your password</p>
-
-                                <div class="form-row form-row-2">
-                                    <div class="form-group">
-                                        <label class="form-label">New Password</label>
-                                        <input type="password" th:field="*{password}" class="form-input" placeholder="Enter new password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Confirm Password</label>
-                                        <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm new password">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Form Actions -->
-                            <div class="form-buttons">
-                                <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    Save Changes
-                                </button>
-                            </div>
                         </form>
                     </div>
 
@@ -406,21 +374,5 @@
 
 <!-- Scripts -->
 <script th:src="@{/js/main.js}"></script>
-<script>
-    // Password confirmation validation
-    const form = document.querySelector('form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const password = document.querySelector('input[name="password"]');
-            const confirmPassword = document.querySelector('input[name="confirmPassword"]');
-
-            if (password && confirmPassword && password.value && password.value !== confirmPassword.value) {
-                e.preventDefault();
-                alert('Passwords do not match!');
-            }
-        });
-    }
-</script>
-
 </body>
 </html>
