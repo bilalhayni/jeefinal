@@ -2187,3 +2187,824 @@ a {
 .text-right {
     text-align: right;
 }
+
+.text-center {
+    text-align: center;
+}
+
+.text-truncate {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-danger {
+    color: var(--danger);
+}
+
+.text-warning {
+    color: var(--warning);
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+/* =====================================================
+   ADDITIONAL STATS GRID VARIANTS
+   ===================================================== */
+.stats-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .stats-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* =====================================================
+   TIMELINE INFO
+   ===================================================== */
+.timeline-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.timeline-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.timeline-row i {
+    font-size: 0.75rem;
+}
+
+/* =====================================================
+   BADGE VARIANTS
+   ===================================================== */
+.badge-dot {
+    position: relative;
+    padding-left: 1.25rem;
+}
+
+.badge-dot::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* =====================================================
+   PROJECT CARDS (Grid Layout)
+   ===================================================== */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .project-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.project-card {
+    background: var(--bg-white);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+}
+
+.project-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.project-card-body {
+    padding: 1.25rem;
+}
+
+.project-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.project-card-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.project-card-description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.project-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.project-card-footer {
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-body);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* =====================================================
+   PAGE HEADER VARIANTS
+   ===================================================== */
+.page-header-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.page-header-with-icon .page-header-title {
+    margin-bottom: 0.25rem;
+}
+
+.page-header-with-icon .page-header-subtitle {
+    margin-top: 0;
+}
+
+/* =====================================================
+   STATS GRID 2-COLUMN
+   ===================================================== */
+.stats-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .stats-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =====================================================
+   ADDITIONAL BADGE VARIANTS
+   ===================================================== */
+.badge-indigo {
+    background-color: var(--indigo-light);
+    color: var(--indigo);
+    border: 1px solid var(--indigo-light);
+}
+
+.badge-mono {
+    font-family: monospace;
+    font-weight: 600;
+}
+
+.badge-purple {
+    background-color: var(--purple-light);
+    color: var(--purple);
+    border: 1px solid var(--purple-light);
+}
+
+/* =====================================================
+   UPPERCASE UTILITY
+   ===================================================== */
+.uppercase {
+    text-transform: uppercase;
+}
+
+/* =====================================================
+   PROFILE CARD
+   ===================================================== */
+.profile-card {
+    background: var(--bg-white);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-header {
+    padding: 2rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-header-avatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.profile-header-info h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.profile-header-info p {
+    margin-top: 0.25rem;
+    opacity: 0.8;
+}
+
+.profile-body {
+    padding: 1.5rem;
+}
+
+.profile-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg-body);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.profile-detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.profile-detail-content {
+    flex: 1;
+}
+
+.profile-detail-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0 0 0.25rem;
+}
+
+.profile-detail-value {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* User Avatar Large */
+.user-avatar-lg {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.125rem;
+}
+
+/* Form Error */
+.form-error {
+    color: var(--danger);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* =====================================================
+   PUBLICATION CARDS
+   ===================================================== */
+.publication-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.publication-card {
+    background: var(--bg-white);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+}
+
+.publication-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.publication-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.publication-number {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.publication-info {
+    flex: 1;
+}
+
+.publication-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+}
+
+.publication-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* =====================================================
+   PROFILE PAGE LAYOUT
+   ===================================================== */
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .profile-layout {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Profile Card (Sidebar) */
+.profile-card-banner {
+    height: 6rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    position: relative;
+}
+
+.profile-card-avatar {
+    position: absolute;
+    bottom: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-white);
+    font-size: 1.75rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-lg);
+    border: 4px solid var(--bg-white);
+}
+
+.profile-card-info {
+    padding: 4rem 1.5rem 1.5rem;
+    text-align: center;
+}
+
+.profile-card-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.profile-card-email {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0.25rem 0 0;
+}
+
+.profile-card-roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.profile-card-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.profile-stat {
+    text-align: center;
+}
+
+.profile-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.profile-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Quick Actions */
+.quick-actions-list {
+    padding: 1rem;
+}
+
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color var(--transition-base);
+}
+
+.quick-action-item:hover {
+    background: var(--bg-body);
+    color: var(--text-primary);
+}
+
+/* Account Info Grid */
+.account-info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .account-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.account-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.account-info-content {
+    flex: 1;
+}
+
+.account-info-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.account-info-value {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0.25rem 0 0;
+}
+
+/* Form Enhancements */
+.form-input-wrapper {
+    position: relative;
+}
+
+.form-input-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.form-input-disabled {
+    background: var(--bg-body);
+    cursor: not-allowed;
+    color: var(--text-secondary);
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.375rem;
+}
+
+.form-hint i {
+    margin-right: 0.25rem;
+}
+
+.form-divider {
+    border-top: 1px solid var(--gray-200);
+    margin: 2rem 0;
+}
+
+.form-section {
+    margin-bottom: 1.5rem;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+}
+
+.form-section-title i {
+    color: var(--text-muted);
+}
+
+.form-section-hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0 0 1rem;
+}
+
+/* Badge Primary Light */
+.badge-primary-light {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-ring);
+}
+
+/* Icon Box Purple */
+.icon-box-purple {
+    background: var(--purple-light);
+    color: var(--purple);
+}
+
+/* Empty State Danger Icon */
+.empty-state-icon-danger {
+    background: var(--danger-light);
+}
+
+.empty-state-icon-danger i {
+    color: var(--danger);
+}
+
+/* =====================================================
+   ERROR PAGES
+   ===================================================== */
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-body);
+    padding: 2rem;
+}
+
+.error-container {
+    text-align: center;
+    max-width: 32rem;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    margin: 0;
+}
+
+.error-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 1rem 0 0.5rem;
+}
+
+.error-message {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0 0 2rem;
+}
+
+.error-icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.error-icon-warning {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.error-icon-danger {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+/* =====================================================
+   ICON BOX DANGER
+   ===================================================== */
+.icon-box-danger {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+/* =====================================================
+   BADGE SECONDARY
+   ===================================================== */
+.badge-secondary {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    border: 1px solid var(--gray-200);
+}
+
+/* =====================================================
+   SEARCH FORM
+   ===================================================== */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .search-form {
+        flex-direction: row;
+    }
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-input {
+    padding-left: 2.5rem;
+}
+
+/* =====================================================
+   BUTTON DARK
+   ===================================================== */
+.btn-dark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: var(--gray-900);
+    color: var(--text-white);
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-base);
+}
+
+.btn-dark:hover {
+    background: var(--gray-800);
+}
+
+/* =====================================================
+   PAGINATION
+   ===================================================== */
+.pagination-container {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .pagination-container {
+        flex-direction: row;
+    }
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.pagination-info span {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.pagination-btn:hover {
+    background: var(--bg-hover);
+}
+
+.pagination-btn.active {
+    background: var(--primary);
+    color: var(--text-white);
+    border-color: var(--primary);
+    font-weight: 500;
+}

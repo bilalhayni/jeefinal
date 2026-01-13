@@ -5,70 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MASI Labo - 403 Forbidden</title>
     <link rel="icon" href="/images/fav.svg" th:href="@{/images/fav.svg}" type="image/x-icon">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Moroccan Pattern */
-        .moroccan-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.15'/%3E%3Cpath d='M30 10L50 30L30 50L10 30L30 10z' fill='none' stroke='%23c9a227' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
-        }
-    </style>
+
+    <!-- Custom CSS -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-[#E8ECF0] relative overflow-hidden font-[Inter]">
-
-<!-- Decorative Background -->
-<div class="absolute inset-0 overflow-hidden">
-    <!-- Moroccan Pattern Overlay -->
-    <div class="absolute inset-0 moroccan-pattern opacity-100"></div>
-
-    <!-- Blur Circles -->
-    <div class="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#00593E]/10 rounded-full blur-3xl"></div>
-    <div class="absolute top-1/3 left-1/4 w-80 h-80 bg-[#D4AF37]/8 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/3 right-1/4 w-72 h-72 bg-[#00593E]/8 rounded-full blur-3xl"></div>
-</div>
+<body class="error-page auth-bg moroccan-pattern">
 
 <!-- Error Container -->
-<div class="min-h-screen flex items-center justify-center p-4 relative z-10">
-    <div class="w-full max-w-[500px]">
-        <!-- Error Card -->
-        <div class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.2)] p-11 text-center">
-            <!-- Error Icon -->
-            <div class="mb-6">
-                <div class="w-24 h-24 mx-auto bg-red-50 rounded-full flex items-center justify-center">
-                    <i class="fas fa-ban text-5xl text-red-500"></i>
-                </div>
-            </div>
+<div class="error-container">
+    <!-- Error Card -->
+    <div class="auth-card">
+        <!-- Error Icon -->
+        <div class="error-icon error-icon-danger">
+            <i class="fas fa-ban"></i>
+        </div>
 
-            <!-- Error Code -->
-            <h1 class="text-6xl font-bold text-[#1A1A1A] mb-4">403</h1>
+        <!-- Error Code -->
+        <h1 class="error-code">403</h1>
 
-            <!-- Error Title -->
-            <h2 class="text-2xl font-semibold text-[#1A1A1A] mb-4">Access Forbidden</h2>
+        <!-- Error Title -->
+        <h2 class="error-title">Access Forbidden</h2>
 
-            <!-- Error Message -->
-            <p class="text-[#666] mb-8">
-                Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is an error.
-            </p>
+        <!-- Error Message -->
+        <p class="error-message">
+            Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is an error.
+        </p>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a th:href="@{/}" href="/"
-                   class="bg-[#00593E] hover:bg-[#004D35] text-white font-medium px-8 py-2.5 text-[15px] transition-colors inline-flex items-center justify-center gap-2">
-                    <i class="fas fa-home"></i>
-                    Go to Dashboard
-                </a>
-                <a href="javascript:history.back()"
-                   class="border border-[#00593E] text-[#00593E] hover:bg-[#00593E] hover:text-white font-medium px-8 py-2.5 text-[15px] transition-colors inline-flex items-center justify-center gap-2">
-                    <i class="fas fa-arrow-left"></i>
-                    Go Back
-                </a>
-            </div>
+        <!-- Action Buttons -->
+        <div class="form-actions-between">
+            <a th:href="@{/}" href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Go to Dashboard
+            </a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Go Back
+            </a>
         </div>
     </div>
 </div>

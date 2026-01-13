@@ -5,68 +5,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MASI Labo - My Profile</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body class="m-0 p-0 box-border font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif] bg-[#FAFAFA] text-[#1A1A1A] text-sm">
+<body>
 <!-- Mobile Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Sidebar -->
-<aside class="sidebar w-[250px] h-screen fixed left-0 top-0 bg-white border-r border-[#E8E8E8] flex flex-col z-[1000]" id="sidebar">
-    <div class="sidebar-header p-2 border-b border-[#E8E8E8] flex items-center gap-3">
-        <img th:src="@{/images/logo.svg}" th:src="@{/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <img th:src="@{/images/logo.svg}" src="/images/logo.svg" alt="Lab Logo" class="sidebar-logo">
     </div>
 
-    <nav class="p-3 flex-1 overflow-y-auto">
-        <div class="mb-6">
-            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3 whitespace-nowrap">Main Menu</div>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/}">
-                <i class="fas fa-th-large w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Dashboard</span>
+    <nav class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main Menu</div>
+
+            <a class="nav-item" th:href="@{/}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-users-cog w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Members & Roles</span>
+
+            <a class="nav-item" th:href="@{/members}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-users-cog"></i>
+                <span>Members &amp; Roles</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/members}" th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
-                <i class="fas fa-users w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Members</span>
+
+            <a class="nav-item" th:href="@{/members}"
+               th:if="${#authorization.expression('hasRole(''DIRECTEUR'')')}">
+                <i class="fas fa-users"></i>
+                <span>Members</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/projects}">
-                <i class="fas fa-folder-open w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Projects</span>
+
+            <a class="nav-item" th:href="@{/departments}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-building"></i>
+                <span>Departments</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/publications}">
-                <i class="fas fa-file-alt w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Publications</span>
+
+            <a class="nav-item" th:href="@{/projects}">
+                <i class="fas fa-folder-open"></i>
+                <span>Projects</span>
             </a>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#666] no-underline rounded-md mb-0.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
-                <i class="fas fa-box w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">Resources</span>
+
+            <a class="nav-item" th:href="@{/publications}">
+                <i class="fas fa-file-alt"></i>
+                <span>Publications</span>
+            </a>
+
+            <a class="nav-item" th:href="@{/resources}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-box"></i>
+                <span>Resources</span>
             </a>
         </div>
 
-        <div class="mb-6">
-            <div class="nav-section-title text-[11px] font-semibold text-[#999] uppercase tracking-wide py-2 px-3 whitespace-nowrap">Account</div>
-            <a class="nav-item flex items-center gap-3 py-2.5 px-3 text-[#00593E] no-underline rounded-md mb-0.5 bg-[rgba(0,89,62,0.08)] font-medium" th:href="@{/profile}">
-                <i class="fas fa-user-circle w-[18px] text-[15px] shrink-0"></i>
-                <span class="whitespace-nowrap">My Profile</span>
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+
+            <a class="nav-item active" th:href="@{/profile}">
+                <i class="fas fa-user-circle"></i>
+                <span>My Profile</span>
             </a>
         </div>
     </nav>
 
-    <div class="p-3 border-t border-[#E8E8E8]">
-        <form method="post" th:action="@{/logout}" class="m-0">
-            <button type="submit" class="logout-btn flex items-center gap-3 py-2.5 px-3 text-[#EF4444] no-underline rounded-md w-full cursor-pointer text-sm bg-transparent border-none hover:bg-[#FEF2F2] hover:text-[#DC2626]">
-                <i class="fas fa-sign-out-alt w-[18px] text-[15px]"></i>
+    <div class="sidebar-footer">
+        <form method="post" th:action="@{/logout}">
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
                 <span>Sign Out</span>
             </button>
         </form>
@@ -74,293 +90,249 @@
 </aside>
 
 <!-- Main Content -->
-<main class="main-content ml-[250px] min-h-screen max-md:ml-0" id="mainContent">
+<main class="main-content" id="mainContent">
     <!-- Top Header -->
-    <header class="bg-white border-b border-[#E8E8E8] py-2.5 px-4 flex justify-between items-center sticky top-0 z-[100] md:px-6">
-        <div class="flex items-center gap-3">
-            <!-- Mobile Menu Button -->
+    <header class="top-header">
+        <div class="header-left">
             <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 class="text-lg font-semibold text-[#1A1A1A] m-0">My Profile</h1>
+            <h1 class="page-title">My Profile</h1>
         </div>
 
-        <div class="flex items-center gap-4">
-            <!-- User Profile Dropdown -->
-            <div class="dropdown">
-                <div class="flex items-center gap-3 py-1.5 pl-1.5 pr-3 border border-[#E8E8E8] rounded-lg cursor-pointer hover:bg-[#F5F5F5]" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-sm text-white">
+        <div class="header-right">
+            <div class="profile-dropdown" id="profileDropdown">
+                <button type="button" class="profile-trigger" aria-haspopup="menu" aria-expanded="false"
+                        onclick="toggleProfileMenu(event)">
+                    <div class="user-avatar">
                         <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                     </div>
-                    <div class="text-left hidden sm:block">
-                        <div class="font-medium text-[13px] text-[#1A1A1A] leading-tight" th:text="${#authentication.name}">User Name</div>
+                    <div class="profile-info hide-mobile">
+                        <div class="profile-name" th:text="${#authentication.name}">User Name</div>
                     </div>
-                    <i class="fas fa-chevron-down text-[#999] text-[10px] ml-1 hidden sm:block"></i>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end border border-[#E8E8E8] rounded-lg shadow-lg p-2 min-w-[200px]">
-                    <li>
-                        <div class="p-3 border-b border-[#E8E8E8] mb-2">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#00593E] to-[#004D35] flex items-center justify-center font-semibold text-base text-white">
-                                    <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-sm text-[#1A1A1A]" th:text="${#authentication.name}">User Name</div>
-                                    <div class="text-xs text-[#666]" sec:authentication="principal.authorities">Role</div>
-                                </div>
-                            </div>
+                    <i class="fas fa-chevron-down profile-chevron hide-mobile"></i>
+                </button>
+
+                <div id="profileMenu" class="profile-menu hidden">
+                    <div class="profile-menu-header">
+                        <div class="user-avatar">
+                            <span th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
                         </div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/profile}">
-                            <i class="fas fa-user w-4 text-sm"></i>
-                            My Profile
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#666] flex items-center gap-2.5 hover:bg-[#F5F5F5] hover:text-[#1A1A1A]" th:href="@{/changepassword}">
-                            <i class="fas fa-key w-4 text-sm"></i>
-                            Change Password
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider my-2 border-[#E8E8E8]"></li>
-                    <li>
-                        <form th:action="@{/logout}" method="post" class="m-0">
-                            <button type="submit" class="dropdown-item py-2.5 px-3 rounded-md text-[13px] text-[#EF4444] flex items-center gap-2.5 w-full hover:bg-[#FEF2F2] hover:text-[#DC2626]">
-                                <i class="fas fa-sign-out-alt w-4 text-sm"></i>
-                                Sign Out
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+                        <div class="profile-menu-info">
+                            <div class="profile-menu-name" th:text="${#authentication.name}">User Name</div>
+                            <div class="profile-menu-role" sec:authentication="principal.authorities">Role</div>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/profile}" class="profile-menu-item">
+                        <i class="fas fa-user"></i>
+                        My Profile
+                    </a>
+
+                    <a th:href="@{/changepassword}" class="profile-menu-item">
+                        <i class="fas fa-key"></i>
+                        Change Password
+                    </a>
+
+                    <div class="profile-menu-divider"></div>
+
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="profile-menu-item profile-menu-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Content Area -->
-    <div class="p-4 md:p-6 lg:p-8">
+    <div class="content-area">
         <!-- Page Header -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">Account Settings</h2>
-            <p class="text-gray-500 mt-1">Manage your personal information and account preferences.</p>
+        <div class="page-header-section">
+            <div>
+                <h2 class="page-header-title">Account Settings</h2>
+                <p class="page-header-subtitle">Manage your personal information and account preferences.</p>
+            </div>
         </div>
 
         <!-- Check if member exists -->
         <div th:if="${member != null}">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="profile-layout">
                 <!-- Profile Card (Left Side) -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                <div class="profile-sidebar">
+                    <div class="profile-card">
                         <!-- Profile Header with Gradient -->
-                        <div class="h-24 bg-gradient-to-br from-primary-600 to-primary-700 relative">
-                            <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
-                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-white">
-                                    <span th:text="${member.fname != null ? #strings.substring(member.fname, 0, 1).toUpperCase() : 'U'}">A</span>
-                                </div>
+                        <div class="profile-card-banner">
+                            <div class="profile-card-avatar">
+                                <span th:text="${member.fname != null ? #strings.substring(member.fname, 0, 1).toUpperCase() : 'U'}">A</span>
                             </div>
                         </div>
 
                         <!-- Profile Info -->
-                        <div class="pt-16 pb-6 px-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-900">
+                        <div class="profile-card-info">
+                            <h3 class="profile-card-name">
                                 <span th:text="${member.fname}">First</span>
                                 <span th:text="${member.lname}">Last</span>
                             </h3>
-                            <p class="text-gray-500 text-sm mt-1" th:text="${member.email}">email@example.com</p>
+                            <p class="profile-card-email" th:text="${member.email}">email@example.com</p>
 
-                            <!-- Roles Badges -->
-                            <div class="flex flex-wrap justify-center gap-2 mt-4" th:if="${member.role != null}">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200">
-                                    <i class="fas fa-shield-alt text-[10px]"></i>
+                            <!-- Role Badge -->
+                            <div class="profile-card-roles" th:if="${member.role != null}">
+                                <span class="badge badge-primary-light">
+                                    <i class="fas fa-shield-alt"></i>
                                     <span th:text="${member.role.rolename}">Role</span>
                                 </span>
                             </div>
                         </div>
 
                         <!-- Quick Stats -->
-                        <div class="border-t border-gray-100 px-6 py-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-gray-900" th:text="${member.role != null ? 1 : 0}">0</div>
-                                    <div class="text-xs text-gray-500">Roles</div>
+                        <div class="profile-card-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-value" th:text="${member.role != null ? 1 : 0}">0</div>
+                                <div class="profile-stat-label">Roles</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value text-success">
+                                    <i class="fas fa-check-circle"></i>
                                 </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-primary-600">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <div class="text-xs text-gray-500">Active</div>
-                                </div>
+                                <div class="profile-stat-label">Active</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Quick Actions Card -->
-                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mt-6">
-                        <div class="px-6 py-4 border-b border-gray-100">
-                            <h4 class="font-semibold text-gray-900">Quick Actions</h4>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Quick Actions</h4>
                         </div>
-                        <div class="p-4 space-y-2">
-                            <a th:href="@{/}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-                                <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                                    <i class="fas fa-th-large text-blue-600 text-sm"></i>
+                        <div class="quick-actions-list">
+                            <a th:href="@{/}" class="quick-action-item">
+                                <div class="icon-box icon-box-md icon-box-blue icon-box-rounded">
+                                    <i class="fas fa-th-large"></i>
                                 </div>
-                                <span class="text-sm font-medium">Go to Dashboard</span>
+                                <span>Go to Dashboard</span>
                             </a>
-                            <a th:href="@{/projects}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                                    <i class="fas fa-folder-open text-emerald-600 text-sm"></i>
+                            <a th:href="@{/projects}" class="quick-action-item">
+                                <div class="icon-box icon-box-md icon-box-green icon-box-rounded">
+                                    <i class="fas fa-folder-open"></i>
                                 </div>
-                                <span class="text-sm font-medium">View Projects</span>
+                                <span>View Projects</span>
                             </a>
-                            <a th:href="@{/publications}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-700">
-                                <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                                    <i class="fas fa-file-alt text-amber-600 text-sm"></i>
+                            <a th:href="@{/publications}" class="quick-action-item">
+                                <div class="icon-box icon-box-md icon-box-amber icon-box-rounded">
+                                    <i class="fas fa-file-alt"></i>
                                 </div>
-                                <span class="text-sm font-medium">View Publications</span>
+                                <span>View Publications</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Edit Form (Right Side) -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                <div class="profile-main">
+                    <div class="form-card">
                         <!-- Form Header -->
-                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                                    <i class="fas fa-user-edit text-primary-600"></i>
+                        <div class="form-card-header">
+                            <div class="form-card-title">
+                                <div class="icon-box icon-box-md icon-box-primary icon-box-rounded">
+                                    <i class="fas fa-user-edit"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-semibold text-gray-900">Personal Information</h3>
-                                    <p class="text-xs text-gray-500">Update your account details</p>
+                                    <h3>Personal Information</h3>
+                                    <p>Update your account details</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Form Body -->
-                        <form th:action="@{/profile/update}" th:object="${member}" method="post" class="p-6">
+                        <form th:action="@{/profile/update}" th:object="${member}" method="post" class="form-card-body">
                             <input type="hidden" th:field="*{id}">
 
                             <!-- Username (Read-only) -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-at text-gray-400 mr-1"></i>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-at"></i>
                                     Username
                                 </label>
-                                <div class="relative">
-                                    <input type="text"
-                                           th:value="*{username}"
-                                           readonly
-                                           disabled
-                                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed">
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-lock text-gray-400 text-sm"></i>
-                                    </div>
+                                <div class="form-input-wrapper">
+                                    <input type="text" th:value="*{username}" readonly disabled class="form-input form-input-disabled">
+                                    <span class="form-input-icon"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <p class="mt-1.5 text-xs text-gray-500">Username cannot be changed</p>
+                                <p class="form-hint">Username cannot be changed</p>
                             </div>
 
                             <!-- Name Fields -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        First Name <span class="text-red-500">*</span>
+                            <div class="form-row form-row-2">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        First Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text"
-                                           th:field="*{fname}"
-                                           required
-                                           class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
-                                           placeholder="Enter first name">
+                                    <input type="text" th:field="*{fname}" required class="form-input" placeholder="Enter first name">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Last Name <span class="text-red-500">*</span>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Last Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text"
-                                           th:field="*{lname}"
-                                           required
-                                           class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
-                                           placeholder="Enter last name">
+                                    <input type="text" th:field="*{lname}" required class="form-input" placeholder="Enter last name">
                                 </div>
                             </div>
 
                             <!-- Email (Read-only) -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-envelope text-gray-400 mr-1"></i>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-envelope"></i>
                                     Email Address
                                 </label>
-                                <div class="relative">
-                                    <input type="email"
-                                           th:value="*{email}"
-                                           readonly
-                                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed">
+                                <div class="form-input-wrapper">
+                                    <input type="email" th:value="*{email}" readonly class="form-input form-input-disabled">
                                     <input type="hidden" th:field="*{email}">
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-lock text-gray-400 text-sm"></i>
-                                    </div>
+                                    <span class="form-input-icon"><i class="fas fa-lock"></i></span>
                                 </div>
-                                <p class="mt-1.5 text-xs text-gray-500">
-                                    <i class="fas fa-info-circle mr-1"></i>
+                                <p class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
                                     Email address cannot be changed. Contact administrator for assistance.
                                 </p>
                             </div>
 
                             <!-- Phone -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-phone text-gray-400 mr-1"></i>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-phone"></i>
                                     Phone Number
                                 </label>
-                                <input type="tel"
-                                       th:field="*{phone}"
-                                       class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
-                                       placeholder="Enter phone number">
+                                <input type="tel" th:field="*{phone}" class="form-input" placeholder="Enter phone number">
                             </div>
 
                             <!-- Divider -->
-                            <div class="border-t border-gray-200 my-8"></div>
+                            <div class="form-divider"></div>
 
                             <!-- Password Section -->
-                            <div class="mb-6">
-                                <h4 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-key text-gray-400"></i>
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-key"></i>
                                     Change Password
                                 </h4>
-                                <p class="text-xs text-gray-500 mb-4">Leave blank if you don't want to change your password</p>
+                                <p class="form-section-hint">Leave blank if you don't want to change your password</p>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            New Password
-                                        </label>
-                                        <input type="password"
-                                               th:field="*{password}"
-                                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
-                                               placeholder="Enter new password">
+                                <div class="form-row form-row-2">
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" th:field="*{password}" class="form-input" placeholder="Enter new password">
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Confirm Password
-                                        </label>
-                                        <input type="password"
-                                               name="confirmPassword"
-                                               class="w-full px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
-                                               placeholder="Confirm new password">
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm Password</label>
+                                        <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm new password">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Form Actions -->
-                            <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
-                                <a th:href="@{/}"
-                                   class="px-5 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                                    Cancel
-                                </a>
-                                <button type="submit"
-                                        class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md inline-flex items-center gap-2">
-                                    <i class="fas fa-save text-sm"></i>
+                            <div class="form-buttons">
+                                <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
                                     Save Changes
                                 </button>
                             </div>
@@ -368,46 +340,46 @@
                     </div>
 
                     <!-- Account Info Card -->
-                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mt-6">
-                        <div class="px-6 py-4 border-b border-gray-100">
-                            <h4 class="font-semibold text-gray-900">Account Information</h4>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Account Information</h4>
                         </div>
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                                        <i class="fas fa-id-badge text-blue-600"></i>
+                        <div class="card-body">
+                            <div class="account-info-grid">
+                                <div class="account-info-item">
+                                    <div class="icon-box icon-box-md icon-box-blue icon-box-rounded">
+                                        <i class="fas fa-id-badge"></i>
                                     </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500">Member ID</p>
-                                        <p class="font-medium text-gray-900" th:text="'#' + ${member.id}">--</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center">
-                                        <i class="fas fa-shield-alt text-emerald-600"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500">Account Status</p>
-                                        <p class="font-medium text-emerald-600">Active</p>
+                                    <div class="account-info-content">
+                                        <p class="account-info-label">Member ID</p>
+                                        <p class="account-info-value" th:text="'#' + ${member.id}">--</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
-                                        <i class="fas fa-user-tag text-amber-600"></i>
+                                <div class="account-info-item">
+                                    <div class="icon-box icon-box-md icon-box-green icon-box-rounded">
+                                        <i class="fas fa-shield-alt"></i>
                                     </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500">Primary Role</p>
-                                        <p class="font-medium text-gray-900" th:text="${member.role != null ? member.role.rolename : 'No Role'}">Role</p>
+                                    <div class="account-info-content">
+                                        <p class="account-info-label">Account Status</p>
+                                        <p class="account-info-value text-success">Active</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-lg bg-violet-50 flex items-center justify-center">
-                                        <i class="fas fa-building text-violet-600"></i>
+                                <div class="account-info-item">
+                                    <div class="icon-box icon-box-md icon-box-amber icon-box-rounded">
+                                        <i class="fas fa-user-tag"></i>
                                     </div>
-                                    <div>
-                                        <p class="text-xs text-gray-500">Laboratory</p>
-                                        <p class="font-medium text-gray-900">MASI Labo</p>
+                                    <div class="account-info-content">
+                                        <p class="account-info-label">Primary Role</p>
+                                        <p class="account-info-value" th:text="${member.role != null ? member.role.rolename : 'No Role'}">Role</p>
+                                    </div>
+                                </div>
+                                <div class="account-info-item">
+                                    <div class="icon-box icon-box-md icon-box-purple icon-box-rounded">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <div class="account-info-content">
+                                        <p class="account-info-label">Laboratory</p>
+                                        <p class="account-info-value">MASI Labo</p>
                                     </div>
                                 </div>
                             </div>
@@ -418,13 +390,13 @@
         </div>
 
         <!-- Error state when member is null -->
-        <div th:if="${member == null}" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+        <div th:if="${member == null}" class="empty-state">
+            <div class="empty-state-icon empty-state-icon-danger">
+                <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Profile Not Found</h3>
-            <p class="text-gray-500 mb-6">We couldn't load your profile information. Please try again later.</p>
-            <a th:href="@{/}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors duration-200">
+            <h4 class="empty-state-title">Profile Not Found</h4>
+            <p class="empty-state-text">We couldn't load your profile information. Please try again later.</p>
+            <a th:href="@{/}" class="btn btn-primary">
                 <i class="fas fa-home"></i>
                 Go to Dashboard
             </a>
@@ -433,8 +405,8 @@
 </main>
 
 <!-- Scripts -->
-
 <script th:src="@{/js/main.js}"></script>
+<script>
     // Password confirmation validation
     const form = document.querySelector('form');
     if (form) {
@@ -449,5 +421,6 @@
         });
     }
 </script>
+
 </body>
 </html>
