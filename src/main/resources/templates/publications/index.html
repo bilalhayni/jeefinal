@@ -38,6 +38,13 @@
                 <i class="fas fa-users"></i>
                 <span>Members</span>
             </a>
+
+            <a class="nav-item" th:href="@{/departments}"
+               th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
+                <i class="fas fa-building"></i>
+                <span>Departments</span>
+            </a>
+
             <a class="nav-item" th:href="@{/projects}">
                 <i class="fas fa-folder-open"></i>
                 <span>Projects</span>
@@ -49,6 +56,15 @@
             <a class="nav-item" th:href="@{/resources}" th:if="${#authorization.expression('hasRole(''ADMINISTRATEUR'')')}">
                 <i class="fas fa-box"></i>
                 <span>Resources</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+
+            <a class="nav-item" th:href="@{/profile}">
+                <i class="fas fa-user-circle"></i>
+                <span>My Profile</span>
             </a>
         </div>
     </nav>
